@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  
+  <item name="Context"
+        inter="Analyser.Interfaces.IContext, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        impl="Analyser.Core.Context"
+        assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        activate="false"/>
+
+  <item name="LogParserService"
+        inter="Analyser.Interfaces.ILogParserService, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        impl="Analyser.Core.Services.LogParserService"
+        assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        activate="true"/>
+
+  <item name="SuiviMCOService"
+        inter="Analyser.Interfaces.ISuiviMCOService, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        impl="Analyser.Core.Services.SuiviMCOService"
+        assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        activate="true"/>
+
+  <item name="SuiviMCO"
+          inter="Analyser.Interfaces.ISuiviMCO, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+          impl="Analyser.SuiviMCO.Module"
+          assemb="Analyser.SuiviMCO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+          activate="true"/>
+
+  <item name="LogParser"
+        inter="Analyser.Interfaces.ILogParser, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        impl="Analyser.LogParser.Module"
+        assemb="Analyser.LogParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        activate="true"/>
+  
+</manifest>

@@ -1,0 +1,55 @@
+﻿<Window x:Class="Analyser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Analyser"
+        WindowState="Maximized"
+        Title="MainWindow">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Menu -->
+        <Menu Grid.ColumnSpan="2" x:Name="MainMenu">
+            <MenuItem Header="_File">
+                <MenuItem Command="local:Commands.New" x:Name="FileNewMI"
+                          CommandManager.CanExecute="CanExecuteNew" CommandManager.Executed="ExecuteNew" 
+                          HorizontalAlignment="Left">
+                </MenuItem>
+                <Separator HorizontalAlignment="Left"/>
+                <MenuItem Command="local:Commands.Open" x:Name="FileOpenMI"
+                          CommandManager.CanExecute="CanExecuteOpen" CommandManager.Executed="ExecuteOpen" 
+                          HorizontalAlignment="Left">
+                </MenuItem>
+                <MenuItem Command="local:Commands.Close" 
+                          CommandManager.CanExecute="CanExecuteClose" CommandManager.Executed="ExecuteClose" 
+                          HorizontalAlignment="Left">
+                </MenuItem>
+                <Separator HorizontalAlignment="Left"/>
+                <MenuItem Command="local:Commands.Save" 
+                          CommandManager.CanExecute="CanExecuteSave" CommandManager.Executed="ExecuteSave" 
+                          HorizontalAlignment="Left">
+                </MenuItem>
+                <MenuItem Command="local:Commands.Delete" 
+                          CommandManager.CanExecute="CanExecuteDelete" CommandManager.Executed="ExecuteDelete" 
+                          HorizontalAlignment="Left">
+                </MenuItem>
+                <Separator HorizontalAlignment="Left"/>
+                <MenuItem Command="local:Commands.Exit" 
+                          CommandManager.CanExecute="CanExecuteExit" CommandManager.Executed="ExecuteExit" 
+                          HorizontalAlignment="Left">
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <DockPanel Grid.Column="1" Grid.Row="1" >
+            <TabControl x:Name="ContentView">
+            </TabControl>
+        </DockPanel>
+        <!-- Side Panel -->
+        <ListBox Grid.Row="1" x:Name="MainSideBar"></ListBox>
+    </Grid>
+</Window>
