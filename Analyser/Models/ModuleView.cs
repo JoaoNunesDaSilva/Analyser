@@ -1,4 +1,6 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

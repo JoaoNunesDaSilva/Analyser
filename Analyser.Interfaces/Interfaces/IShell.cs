@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Analyser.Interfaces
+namespace Analyser.Infrastructure.Interfaces
 {
     public interface IShell
     {

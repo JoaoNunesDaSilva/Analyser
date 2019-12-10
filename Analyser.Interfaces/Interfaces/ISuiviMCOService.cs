@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyser.Interfaces
+namespace Analyser.Infrastructure.Interfaces
 {
-    public interface IService
+    public interface ISuiviMCOService : IService
     {
+        void LoadData(ISuiviMCO module);
     }
 }

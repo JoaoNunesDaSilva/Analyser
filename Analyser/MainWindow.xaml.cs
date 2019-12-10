@@ -1,4 +1,4 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
 using Analyser.Models;
 using System;
 using System.Collections.Generic;

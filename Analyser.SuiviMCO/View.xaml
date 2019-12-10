@@ -11,8 +11,8 @@
                     <ColumnDefinition Width="90"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25px"></RowDefinition>
-                    <RowDefinition Height="25px"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column ="0" Width="120px">Lookup File</Label>
@@ -40,7 +40,7 @@
                     <ColumnDefinition Width="90"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25px"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column ="0" Width="120px">Data File</Label>

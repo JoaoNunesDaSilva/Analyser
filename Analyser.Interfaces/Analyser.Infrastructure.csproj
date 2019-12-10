@@ -7,8 +7,8 @@
     <ProjectGuid>{3549A5FC-BF20-4206-B5C4-B7132D8EDD2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Analyser.Interfaces</RootNamespace>
-    <AssemblyName>Analyser.Interfaces</AssemblyName>
+    <RootNamespace>Analyser.Infrastructure</RootNamespace>
+    <AssemblyName>Analyser.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,10 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AnalyserTokenqwertyuiopasdfghjklçzxcvbnm.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -49,20 +50,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="IView.cs" />
-    <Compile Include="IContext.cs" />
-    <Compile Include="ILogParserService.cs" />
-    <Compile Include="ILogParser.cs" />
-    <Compile Include="IModule.cs" />
-    <Compile Include="IService.cs" />
-    <Compile Include="IShell.cs" />
-    <Compile Include="ISuiviMCOService.cs" />
-    <Compile Include="ISuiviMCO.cs" />
+    <Compile Include="Interfaces\ILogParserModel.cs" />
+    <Compile Include="Interfaces\ISuiviMCOModel.cs" />
+    <Compile Include="Model\ImplementationObj.cs" />
+    <Compile Include="Model\InjectableAttribute.cs" />
+    <Compile Include="Interfaces\IView.cs" />
+    <Compile Include="Interfaces\IContext.cs" />
+    <Compile Include="Interfaces\ILogParserService.cs" />
+    <Compile Include="Interfaces\ILogParser.cs" />
+    <Compile Include="Interfaces\IModule.cs" />
+    <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\IShell.cs" />
+    <Compile Include="Interfaces\ISuiviMCOService.cs" />
+    <Compile Include="Interfaces\ISuiviMCO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AnalyserTokenqwertyuiopasdfghjklçzxcvbnm.pfx" />
+    <Compile Include="Model\ObjectFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

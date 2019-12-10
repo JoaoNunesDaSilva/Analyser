@@ -1,4 +1,5 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
 using Analyser.SuiviMCO.Models;
 using Microsoft.Win32;
 using System;
@@ -18,25 +19,23 @@ using System.Windows.Shapes;
 
 namespace Analyser.SuiviMCO
 {
-    /// <summary>
-    /// Interaction logic for Shell.xaml
-    /// </summary>
+    [Injectable("SuiviMCOView")]
     public partial class View : UserControl, IView, IDisposable
     {
-        ViewModel viewModel;
+        private ISuiviMCOModel viewModel;
         private bool disposed;
+        private IContext context;
 
-        public View(ViewModel viewModel)
+        public View(IContext context, ISuiviMCOModel viewModel)
         {
-            InitializeComponent();
+            this.context = context;
             this.viewModel = viewModel;
+            InitializeComponent();
         }
-
         ~View()
         {
             Dispose(false);
         }
-
         public void Dispose()
         {
             Dispose(true);
@@ -50,6 +49,7 @@ namespace Analyser.SuiviMCO
                 {
 
                 }
+                this.viewModel = null;
                 disposed = true;
             }
         }
@@ -62,7 +62,9 @@ namespace Analyser.SuiviMCO
 
         private void ChooseLookupFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            viewModel.LoadLookup();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                viewModel.LookupFile = openFileDialog.FileName;
             e.Handled = true;
         }
 
@@ -73,7 +75,9 @@ namespace Analyser.SuiviMCO
 
         private void ChooseMCOFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            viewModel.LoadMCO();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                viewModel.MCOFile = openFileDialog.FileName;
             e.Handled = true;
         }
 
@@ -84,7 +88,9 @@ namespace Analyser.SuiviMCO
 
         private void ChooseDataFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            viewModel.LoadData();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                viewModel.DataFile = openFileDialog.FileName;
             e.Handled = true;
         }
         private void SetDataFile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -94,7 +100,9 @@ namespace Analyser.SuiviMCO
 
         private void SetDataFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            viewModel.SetDataFile();
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
+                viewModel.DataFile = saveFileDialog.FileName;
             e.Handled = true;
         }
     }

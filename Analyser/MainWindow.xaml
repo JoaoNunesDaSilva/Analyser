@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Analyser"
         WindowState="Maximized"
-        FontFamily="SegoeUI" FontSize="12px"
+        FontFamily="Segoe UI" FontSize="16px"
         Title="MainWindow">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -11,7 +11,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!-- Menu -->

@@ -1,4 +1,5 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
 using Analyser.LogParser.Models;
 using System;
 using System.Collections.Generic;
@@ -11,20 +12,23 @@ using System.Windows.Input;
 
 namespace Analyser.LogParser
 {
+    [Injectable("LogParser")]
     public class Module : ILogParser, IDisposable
     {
+        private ILogParserService service;
         public MenuItem FileNewMenuItem { get; private set; }
         public MenuItem ModuleMenu { get; private set; }
 
+        private IView view;
+        private ILogParserModel model;
         private IContext context;
-        private ILogParserService service;
 
         private bool disposed;
 
-        public Module(IContext context)
+        public Module(IContext context, ILogParserService service)
         {
+            this.service = service;
             this.context = context;
-            this.service = (ILogParserService)this.context.GetService("LogParserService");
             this.Initialize();
         }
 
@@ -65,8 +69,8 @@ namespace Analyser.LogParser
             // Load Menu
             ModuleMenu = context.Shell.AddMenu("_Prima Log Parser", "PrimaLogParser");
 
-            ViewModel model = new ViewModel();
-            View view = new View
+            model = new ViewModel();
+            view = new View(context, model)
             {
                 DataContext = model
             };

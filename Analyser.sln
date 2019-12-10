@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyser.Core", "Analyser.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyser.SuiviMCO", "Analyser.SuiviMCO\Analyser.SuiviMCO.csproj", "{CED7D273-446D-4DA7-8F38-3D2B8A4C3D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyser.Interfaces", "Analyser.Interfaces\Analyser.Interfaces.csproj", "{3549A5FC-BF20-4206-B5C4-B7132D8EDD2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyser.Infrastructure", "Analyser.Interfaces\Analyser.Infrastructure.csproj", "{3549A5FC-BF20-4206-B5C4-B7132D8EDD2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyser.LogParser", "Analyser.LogParser\Analyser.LogParser.csproj", "{035DB075-15D1-491B-B2CD-BC894BF10D1D}"
 EndProject

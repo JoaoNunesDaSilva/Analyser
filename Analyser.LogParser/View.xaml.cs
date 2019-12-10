@@ -1,4 +1,6 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
+using Analyser.LogParser.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +18,40 @@ using System.Windows.Shapes;
 
 namespace Analyser.LogParser
 {
-    /// <summary>
-    /// Interaction logic for Shell.xaml
-    /// </summary>
+    [Injectable("LogParserView")]
     public partial class View : UserControl, IView
     {
-        public View()
+        private ILogParserModel viewModel;
+        private bool disposed;
+        private IContext context;
+
+        public View(IContext context, ILogParserModel viewModel)
         {
+            this.context = context;
+            this.viewModel = viewModel;
             InitializeComponent();
         }
+        ~View()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        public void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+
+                }
+                this.viewModel = null;
+                disposed = true;
+            }
+        }
+
     }
 }

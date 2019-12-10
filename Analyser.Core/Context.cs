@@ -1,5 +1,5 @@
-﻿using Analyser.Infrastructure;
-using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,34 +11,38 @@ using System.Windows;
 namespace Analyser.Core
 {
 
+    [Injectable("Context")]
     public class Context : IContext
     {
+        ObjectFactory refl;
         public IShell Shell { get; private set; }
         public Context()
         {
-            Views = new Dictionary<string, Implementation>();
-            Modules = new Dictionary<string, Implementation>();
-            Services = new Dictionary<string, Implementation>();
+            Views = new Dictionary<string, ImplementationObj>();
+            Modules = new Dictionary<string, ImplementationObj>();
+            Services = new Dictionary<string, ImplementationObj>();
             ServiceInstances = new Dictionary<string, IService>();
             ModuleInstances = new Dictionary<string, IModule>();
+            ViewInstances = new Dictionary<string, IView>();
+            refl = new ObjectFactory(this);
         }
-        public Dictionary<string, Implementation> Views { get; private set; }
-        public Dictionary<string, Implementation> Modules { get; private set; }
-        public Dictionary<string, Implementation> Services { get; private set; }
+        public Dictionary<string, ImplementationObj> Views { get; private set; }
+        public Dictionary<string, ImplementationObj> Modules { get; private set; }
+        public Dictionary<string, ImplementationObj> Services { get; private set; }
         public void RegisterView(string name, Type component, Type interf)
         {
             if (!Views.ContainsKey(name))
-                Views.Add(name, new Implementation() { oType = component, iType = interf });
+                Views.Add(name, new ImplementationObj() { oType = component, iType = interf });
         }
         public void RegisterModule(string name, Type module, Type interf)
         {
             if (!Modules.ContainsKey(name))
-                Modules.Add(name, new Implementation() { oType = module, iType = interf });
+                Modules.Add(name, new ImplementationObj() { oType = module, iType = interf });
         }
         public void RegisterService(string name, Type service, Type interf)
         {
             if (!Services.ContainsKey(name))
-                Services.Add(name, new Implementation() { oType = service, iType = interf });
+                Services.Add(name, new ImplementationObj() { oType = service, iType = interf });
         }
         public Dictionary<string, IService> ServiceInstances { get; private set; }
         public Dictionary<string, IModule> ModuleInstances { get; private set; }
@@ -63,58 +67,33 @@ namespace Analyser.Core
         }
         internal IService CreateService(string name)
         {
-            Implementation impl = this.Services[name];
-            Type[] types = ResolveCtorTypes(impl);
-            object[] parms = ResolveCtorParams(types);
-            IService service = (IService)impl.oType.GetConstructor(types).Invoke(parms);
+            if (ServiceInstances.ContainsKey(name))
+                return ServiceInstances[name];
+
+            ImplementationObj impl = this.Services[name];
+            IService service = (IService)refl.CreateInstance(impl);
             ServiceInstances.Add(name, service);
             return service;
         }
-        internal void CreateModule(string name)
+        internal IModule CreateModule(string name)
         {
-            Implementation impl = this.Modules[name];
-            Type[] types = ResolveCtorTypes(impl);
-            object[] parms = ResolveCtorParams(types);
-            IModule module = (IModule)impl.oType.GetConstructor(types).Invoke(parms);
+            if (ModuleInstances.ContainsKey(name))
+                return ModuleInstances[name];
+
+            ImplementationObj impl = this.Modules[name];
+            IModule module = (IModule)refl.CreateInstance(impl);
             ModuleInstances.Add(name, module);
+            return module;
         }
-        internal void CreateView(string name)
+        internal IView CreateView(string name)
         {
-            Implementation impl = this.Views[name];
-            Type[] types = ResolveCtorTypes(impl);
-            object[] parms = ResolveCtorParams(types);
-            IView module = (IView)impl.oType.GetConstructor(types).Invoke(parms);
-            ViewInstances.Add(name, module);
-        }
-        internal Type[] ResolveCtorTypes(Implementation impl)
-        {
-            List<Type> types = new List<Type>();
-            List<ConstructorInfo> ctors = new List<ConstructorInfo>();
-            ConstructorInfo selectedCtor = null;
-            foreach (ConstructorInfo ctor in impl.oType.GetConstructors())
-                ctors.Insert(ctor.GetParameters().Count(), ctor);
+            if (ViewInstances.ContainsKey(name))
+                return ViewInstances[name];
 
-            bool resolved = false;
-            for (int i = ctors.Count(), j = 0; i >= j; i--)
-            {
-                bool soFar = true;
-                ConstructorInfo ctor = ctors[i];
-                ParameterInfo[] parms = ctor.GetParameters();
-                foreach (ParameterInfo parm in parms)
-                {
-                    // try to resolve param
-                    // if no !soFar, break;
-                }
-                if (resolved) break;
-            }
-            return types.Count() > 0 ? types.ToArray() : null;
-        }
-        private object[] ResolveCtorParams(object[] types)
-        {
-            List<object> objs = new List<object>();
-
-
-            return objs.Count() > 0 ? objs.ToArray() : null;
+            ImplementationObj impl = this.Views[name];
+            IView view = (IView)refl.CreateInstance(impl);
+            ViewInstances.Add(name, view);
+            return view;
         }
     }
 }

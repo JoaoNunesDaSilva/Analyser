@@ -1,4 +1,6 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
+
 using Analyser.SuiviMCO.Models;
 using System;
 using System.Collections.Generic;
@@ -10,24 +12,23 @@ using System.Windows.Input;
 
 namespace Analyser.SuiviMCO
 {
+    [InjectableAttribute("SuiviMCO")]
     public class Module : ISuiviMCO, IDisposable
     {
-
+        private ISuiviMCOService service;
         private IView view;
         private IContext context;
-        private ISuiviMCOService service;
+        private MenuItem loadDataMenuItem;
+        private bool disposed;
 
+        public ISuiviMCOModel Model { get; private set; }
         public MenuItem FileNewMenuItem { get; private set; }
         public MenuItem ModuleMenu { get; private set; }
 
-        private MenuItem setSourcesMenuItem;
-        
-        private bool disposed;
-
-        public Module(IContext context)
+        public Module(IContext context, ISuiviMCOService service)
         {
             this.context = context;
-            this.service = (ISuiviMCOService)this.context.GetService("SuiviMCOService");
+            this.service = service;
             this.Initialize();
         }
 
@@ -66,6 +67,7 @@ namespace Analyser.SuiviMCO
         #region Load Data
         private void ExecuteLoadData(object sender, ExecutedRoutedEventArgs e)
         {
+            this.service.LoadData(this);
             e.Handled = true;
         }
         private void CanExecuteLoadData(object sender, CanExecuteRoutedEventArgs e)
@@ -74,19 +76,19 @@ namespace Analyser.SuiviMCO
         }
         #endregion
 
-        #region New
+        #region New Suivi MCO
         private void ExecuteNew(object sender, ExecutedRoutedEventArgs e)
         {
             if (ModuleMenu != null) return;
             
             // Load Menu
             ModuleMenu = context.Shell.AddMenu("Suivi _MCO", "SuiviMCO");
-            setSourcesMenuItem = context.Shell.AddMenuItem(ModuleMenu, "_Load Data", "LoadDataSuiviMCO", Commands.LoadData, CanExecuteLoadData, ExecuteLoadData);
+            loadDataMenuItem = context.Shell.AddMenuItem(ModuleMenu, "_Load Data", "LoadDataSuiviMCO", Commands.LoadData, CanExecuteLoadData, ExecuteLoadData);
 
-            ViewModel model = new ViewModel();
-            view = new View(model)
+            Model = new ViewModel();
+            view = new View(context, Model)
             {
-                DataContext = model
+                DataContext = Model
             };
             context.Shell.LoadView("Suivi MCO", view, this);
             e.Handled = true;

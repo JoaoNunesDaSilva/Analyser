@@ -1,4 +1,5 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
 using Analyser.Models;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Analyser
             // instantiate
             context = (IContext)AppDomain.CurrentDomain.CreateInstanceAndUnwrap(contextItem.assemb, contextItem.impl);
             // load from manifest
-            foreach (ManifestItem item in manifest.Where(p => p.name != "Context" && p._ref != "Context"))
+            foreach (ManifestItem item in manifest.Where(p => p.name != "Context" && p._ref != "Context" && p.type != TypeEnum.assembly))
             {
 
                 Type iType = null;
@@ -38,8 +39,12 @@ namespace Analyser
 
                 if (!string.IsNullOrEmpty(item._ref))
                 {
-                    iType = Type.GetType(item.inter);
-                    oType = Type.GetType(string.Concat(item.impl, ", ", item.assemb));
+                    if (!context.Services.ContainsKey(item._ref))
+                        throw new Exception("Could not resolve reference to " + item._ref);
+
+                    ImplementationObj impl = context.Services[item._ref];
+                    iType = impl.iType;
+                    oType = impl.oType;
                 }
                 else
                 {
@@ -48,13 +53,13 @@ namespace Analyser
                 }
 
                 if (iType.GetInterfaces().Contains(typeof(IView)))
-                    context.RegisterView(item.name, oType);
+                    context.RegisterView(item.name, oType, iType);
 
                 if (iType.GetInterfaces().Contains(typeof(IModule)))
-                    context.RegisterModule(item.name, oType);
+                    context.RegisterModule(item.name ?? item._ref, oType, iType);
 
                 if (iType.GetInterfaces().Contains(typeof(IService)))
-                    context.RegisterService(item.name, oType);
+                    context.RegisterService(item.name ?? item._ref, oType, iType);
             }
         }
         /// <summary>
@@ -73,46 +78,59 @@ namespace Analyser
 
                 if (item.Name == "assemblies")
                 {
-                    ManifestItem mitem = new ManifestItem()
+                    foreach (XmlNode asm in item.ChildNodes)
                     {
-                        type = TypeEnum.assembly,
-                        name = item["name"].Value,
-                        assemb = item["assemb"].Value
-                    };
-
-                    manifest.Add(mitem);
-                    if (asmsloaded.Contains(mitem.assemb)) continue;
-                    AppDomain.CurrentDomain.Load(mitem.assemb);
+                        if (asm.NodeType != XmlNodeType.Element) continue;
+                        ManifestItem mitem = new ManifestItem()
+                        {
+                            type = TypeEnum.assembly,
+                            name = asm.Attributes["name"].Value,
+                            assemb = asm.Attributes["assemb"].Value
+                        };
+                        manifest.Add(mitem);
+                        if (asmsloaded.Contains(mitem.assemb)) continue;
+                        AppDomain.CurrentDomain.Load(mitem.assemb);
+                    }
                     continue;
                 }
 
                 if (item.Name == "singletons")
                 {
-                    ManifestItem mitem = new ManifestItem()
+                    foreach (XmlNode singleton in item.ChildNodes)
                     {
-                        type = TypeEnum.singleton,
-                        name = item["name"].Value,
-                        inter = item["inter"].Value,
-                        impl = item["impl"].Value,
-                        activate = bool.Parse(item["activate"].Value)
-                    };
+                        if (singleton.NodeType != XmlNodeType.Element) continue;
+                        ManifestItem mitem = new ManifestItem()
+                        {
+                            type = TypeEnum.singleton,
+                            name = singleton.Attributes["name"].Value,
+                            inter = singleton.Attributes["inter"].Value,
+                            impl = singleton.Attributes["impl"].Value,
+                            assemb = singleton.Attributes["assemb"].Value,
+                            activate = singleton.Attributes.GetNamedItem("activate") != null ? bool.Parse(singleton.Attributes["activate"].Value) : false,
 
-                    manifest.Add(mitem);
+                        };
+                        manifest.Add(mitem);
+                    }
                     continue;
                 }
 
                 if (item.Name == "injectables")
                 {
-                    ManifestItem mitem = new ManifestItem()
+                    foreach (XmlNode intectable in item.ChildNodes)
                     {
-                        type = TypeEnum.injectable,
-                        name = item["name"].Value ?? null,
-                        inter = item["inter"].Value ?? null,
-                        impl = item["impl"].Value ?? null,
-                        _ref = item["ref"].Value ?? null,
-                        activate = !string.IsNullOrEmpty(item["activate"].Value) ? bool.Parse(item["activate"].Value) : false
-                    };
-                    manifest.Add(mitem);
+                        if (intectable.NodeType != XmlNodeType.Element) continue;
+                        ManifestItem mitem = new ManifestItem()
+                        {
+                            type = TypeEnum.injectable,
+                            name = intectable.Attributes.GetNamedItem("name") != null ? intectable.Attributes["name"].Value : null,
+                            inter = intectable.Attributes.GetNamedItem("inter") != null ? intectable.Attributes["inter"].Value : null,
+                            impl = intectable.Attributes.GetNamedItem("impl") != null ? intectable.Attributes["impl"].Value : null,
+                            assemb = intectable.Attributes.GetNamedItem("assemb") != null ? intectable.Attributes["assemb"].Value : null,
+                            _ref = intectable.Attributes.GetNamedItem("ref") != null ? intectable.Attributes["ref"].Value : null,
+                            activate = intectable.Attributes.GetNamedItem("activate") != null ? bool.Parse(intectable.Attributes["activate"].Value) : false,
+                        };
+                        manifest.Add(mitem);
+                    }
                     continue;
                 }
 

@@ -1,4 +1,4 @@
-﻿using Analyser.Interfaces;
+﻿using Analyser.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,16 +19,18 @@ namespace Analyser
         IContext context;
         public App() : base()
         {
-            // Bootstrap
-            Bootstrap();
-
-            // Load Window
-            this.MainWindow = new MainWindow();
-            this.MainWindow.Show();
-
-            // Tell context which is the shell
-            context.Initialize(this.MainWindow);
-
+            try
+            {
+                // Bootstrap
+                Bootstrap();
+                // Load Window
+                this.MainWindow = new MainWindow();
+                this.MainWindow.Show();
+                // Tell context which is the shell
+                context.Initialize(this.MainWindow);
+            }
+            catch { }
+            finally { }
         }
 
         private void Bootstrap()
@@ -40,7 +42,7 @@ namespace Analyser
             }
             catch
             {
-
+                throw;
             }
         }
     }

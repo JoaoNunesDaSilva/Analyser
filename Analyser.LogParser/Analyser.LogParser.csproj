@@ -31,10 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AnalyserTokenqwertyuiopasdfghjklçzxcvbnm.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -60,22 +61,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Analyser.Interfaces\Analyser.Interfaces.csproj">
-      <Project>{3549a5fc-bf20-4206-b5c4-b7132d8edd2e}</Project>
-      <Name>Analyser.Interfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AnalyserTokenqwertyuiopasdfghjklçzxcvbnm.pfx" />
+    <ProjectReference Include="..\Analyser.Interfaces\Analyser.Infrastructure.csproj">
+      <Project>{3549a5fc-bf20-4206-b5c4-b7132d8edd2e}</Project>
+      <Name>Analyser.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)Analyser\Modules" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)Analyser\$(OutDir)Modules" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

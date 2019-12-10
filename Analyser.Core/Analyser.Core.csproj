@@ -31,10 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AnalyserTokenqwertyuiopasdfghjklçzxcvbnm.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -57,16 +58,13 @@
     <Compile Include="Services\SuiviMCOService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Analyser.Interfaces\Analyser.Interfaces.csproj">
+    <ProjectReference Include="..\Analyser.Interfaces\Analyser.Infrastructure.csproj">
       <Project>{3549a5fc-bf20-4206-b5c4-b7132d8edd2e}</Project>
-      <Name>Analyser.Interfaces</Name>
+      <Name>Analyser.Infrastructure</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AnalyserTokenqwertyuiopasdfghjklçzxcvbnm.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)Analyser\Modules" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)Analyser\$(OutDir)Modules" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

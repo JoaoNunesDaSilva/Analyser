@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyser.Interfaces
+namespace Analyser.Infrastructure.Interfaces
 {
     public interface ILogParserService : IService
     {
