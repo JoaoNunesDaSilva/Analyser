@@ -84,6 +84,7 @@ namespace Analyser
             TabItem tab = new TabItem() { Header = header, Tag = modView };
             tab.Content = view;
             this.ContentView.Items.Add(tab);
+            tab.Focus();
         }
 
         #endregion

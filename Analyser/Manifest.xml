@@ -8,11 +8,11 @@
     <assembly name="Analyser.Core"
               assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
 
-    <assembly name="Analyser.SuiviMCO"
-              assemb="Analyser.SuiviMCO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+    <assembly name="Analyser.Services.SuiviMCOService"
+              assemb="Analyser.Services.SuiviMCOService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
 
-    <assembly name="Analyser.LogParser"
-              assemb="Analyser.LogParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+    <assembly name="Analyser.Services.LogParserService"
+              assemb="Analyser.Services.LogParserService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
 
   </assemblies>
 
@@ -28,14 +28,14 @@
 
     <singleton name="LogParserService"
           inter="Analyser.Infrastructure.Interfaces.ILogParserService, Analyser.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-          impl="Analyser.Core.Services.LogParserService"
-          assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+          impl="Analyser.Services.LogParserService"
+          assemb="Analyser.Services.LogParserService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
           activate="true"/>
 
     <singleton name="SuiviMCOService"
           inter="Analyser.Infrastructure.Interfaces.ISuiviMCOService, Analyser.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-          impl="Analyser.Core.Services.SuiviMCOService"
-          assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+          impl="Analyser.Services.SuiviMCOService"
+          assemb="Analyser.Services.SuiviMCOService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
           activate="true"/>
 
   </singletons>

@@ -8,6 +8,6 @@ namespace Analyser.Infrastructure.Interfaces
 {
     public interface ISuiviMCOService : IService
     {
-        void LoadData(ISuiviMCO module);
+        void LoadDataFromFiles(ISuiviMCO module);
     }
 }

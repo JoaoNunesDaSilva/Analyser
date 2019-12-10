@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyser.Core.Services
+namespace Analyser.Services
 {
     [Injectable("LogParserService")]
     public class LogParserService : ILogParserService

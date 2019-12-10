@@ -33,7 +33,7 @@ namespace Analyser.SuiviMCO
         }
 
         #region IDisposable Implementation
-        
+
         ~Module()
         {
             Dispose(false);
@@ -67,12 +67,15 @@ namespace Analyser.SuiviMCO
         #region Load Data
         private void ExecuteLoadData(object sender, ExecutedRoutedEventArgs e)
         {
-            this.service.LoadData(this);
+            this.service.LoadDataFromFiles(this);
             e.Handled = true;
         }
         private void CanExecuteLoadData(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            e.CanExecute = !string.IsNullOrEmpty(this.Model.DataFile) &&
+                !string.IsNullOrEmpty(this.Model.LookupFile) &&
+                !string.IsNullOrEmpty(this.Model.MCOFile);
+            e.Handled = true;
         }
         #endregion
 
@@ -80,7 +83,7 @@ namespace Analyser.SuiviMCO
         private void ExecuteNew(object sender, ExecutedRoutedEventArgs e)
         {
             if (ModuleMenu != null) return;
-            
+
             // Load Menu
             ModuleMenu = context.Shell.AddMenu("Suivi _MCO", "SuiviMCO");
             loadDataMenuItem = context.Shell.AddMenuItem(ModuleMenu, "_Load Data", "LoadDataSuiviMCO", Commands.LoadData, CanExecuteLoadData, ExecuteLoadData);
