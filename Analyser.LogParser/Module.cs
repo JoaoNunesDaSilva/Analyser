@@ -13,7 +13,6 @@ namespace Analyser.LogParser
 {
     public class Module : ILogParser, IDisposable
     {
-
         public MenuItem FileNewMenuItem { get; private set; }
         public MenuItem ModuleMenu { get; private set; }
 

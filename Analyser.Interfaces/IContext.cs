@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analyser.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,9 @@ namespace Analyser.Interfaces
     public interface IContext
     {
         IShell Shell { get; }
-        Dictionary<string, Type> Views { get; }
-        Dictionary<string, Type> Modules { get; }
-        Dictionary<string, Type> Services { get; }
+        Dictionary<string, Implementation> Views { get; }
+        Dictionary<string, Implementation> Modules { get; }
+        Dictionary<string, Implementation> Services { get; }
         Dictionary<string, IService> ServiceInstances { get; }
         Dictionary<string, IModule> ModuleInstances { get; }
         Dictionary<string, IView> ViewInstances { get; }

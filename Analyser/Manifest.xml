@@ -1,34 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  
-  <item name="Context"
-        inter="Analyser.Interfaces.IContext, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        impl="Analyser.Core.Context"
-        assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        activate="false"/>
 
-  <item name="LogParserService"
-        inter="Analyser.Interfaces.ILogParserService, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        impl="Analyser.Core.Services.LogParserService"
-        assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        activate="true"/>
+  <!-- NOTE : ASSEMBLIES LOAD IN THE ORDER IN WHICH THEY ARE LISTED HERE  -->
+  <!--        THEIR INTERDEPENDENCIES MUST BE REFLECTED THE SAME WAY      -->
+  <assemblies>
+    
+    <assembly name="Analyser.Core"
+              assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3dc44b8b-d5f0-45fe-b617-4272d7fb110e"/>
+              
+    <assembly name="Analyser.SuiviMCO"
+              assemb="Analyser.SuiviMCO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ced7d273-446d-4da7-8f38-3d2b8a4c3d46"/>
+    
+    <assembly name="Analyser.LogParser"
+              assemb="Analyser.LogParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=035db075-15d1-491b-b2cd-bc894bf10d1d"/>
+    
+  </assemblies>
 
-  <item name="SuiviMCOService"
-        inter="Analyser.Interfaces.ISuiviMCOService, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        impl="Analyser.Core.Services.SuiviMCOService"
-        assemb="Analyser.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        activate="true"/>
+  <!-- NOTE : SINGLETONS LOAD IN THE ORDER IN WHICH THEY ARE LISTED HERE  -->
+  <!--        THEIR INTERDEPENDENCIES MUST BE REFLECTED THE SAME WAY      -->
+  <singletons>
 
-  <item name="SuiviMCO"
-          inter="Analyser.Interfaces.ISuiviMCO, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-          impl="Analyser.SuiviMCO.Module"
-          assemb="Analyser.SuiviMCO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+    <singleton name="Context"
+          inter="Analyser.Interfaces.IContext, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3549a5fc-bf20-4206-b5c4-b7132d8edd2e"
+          impl="Analyser.Core.Context"
           activate="true"/>
 
-  <item name="LogParser"
-        inter="Analyser.Interfaces.ILogParser, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        impl="Analyser.LogParser.Module"
-        assemb="Analyser.LogParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-        activate="true"/>
-  
+    <singleton name="LogParserService"
+          inter="Analyser.Interfaces.ILogParserService, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3549a5fc-bf20-4206-b5c4-b7132d8edd2e"
+          impl="Analyser.Core.Services.LogParserService"
+          activate="true"/>
+
+    <singleton name="SuiviMCOService"
+          inter="Analyser.Interfaces.ISuiviMCOService, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3549a5fc-bf20-4206-b5c4-b7132d8edd2e"
+          impl="Analyser.Core.Services.SuiviMCOService"
+          activate="true"/>
+
+  </singletons>
+
+  <!-- NOTE : THE OBJECT FACTORY WILL TRY TO RESOLVE ALL CONSTRUCTOR      -->  
+  <!--        PARAMETERS WITH THE INTERFACES LISTED HERE. IF SO IT        -->
+  <!--        WILL USE THE CONSTRUCTOR WITH THE MOST RESOLVED PARAMETERS  -->
+  <injectables>
+
+    <!-- Main Context -->
+    <injectable ref="Context"/>
+
+    <!-- Log Parser Service -->
+    <injectable ref="LogParserService"/>
+
+    <!-- Suivi MCO Service -->
+    <injectable ref="SuiviMCOService"/>
+
+    <!-- Suivi MCO Implementation -->
+    <injectable name="SuiviMCO"
+            inter="Analyser.Interfaces.ISuiviMCO, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3549a5fc-bf20-4206-b5c4-b7132d8edd2e"
+            impl="Analyser.SuiviMCO.Module"
+            activate="true"/>
+
+    <!-- Log Parser Implementation -->
+    <injectable name="LogParser"
+          inter="Analyser.Interfaces.ILogParser, Analyser.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3549a5fc-bf20-4206-b5c4-b7132d8edd2e"
+          impl="Analyser.LogParser.Module"
+          activate="true"/>
+
+  </injectables>
+
 </manifest>
