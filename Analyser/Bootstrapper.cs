@@ -22,48 +22,7 @@ namespace Analyser
             return context;
         }
         /// <summary>
-        /// Creates the instance of the context singleton 
-        /// </summary>
-        /// <returns></returns>
-        private void LoadContext()
-        {
-            ManifestItem contextItem = manifest.First(p => p.name == "Context");
-            // instantiate
-            context = (IContext)AppDomain.CurrentDomain.CreateInstanceAndUnwrap(contextItem.assemb, contextItem.impl);
-            // load from manifest
-            foreach (ManifestItem item in manifest.Where(p => p.name != "Context" && p._ref != "Context" && p.type != TypeEnum.assembly))
-            {
-
-                Type iType = null;
-                Type oType = null;
-
-                if (!string.IsNullOrEmpty(item._ref))
-                {
-                    if (!context.Services.ContainsKey(item._ref))
-                        throw new Exception("Could not resolve reference to " + item._ref);
-
-                    ImplementationObj impl = context.Services[item._ref];
-                    iType = impl.iType;
-                    oType = impl.oType;
-                }
-                else
-                {
-                    iType = Type.GetType(item.inter);
-                    oType = Type.GetType(string.Concat(item.impl, ", ", item.assemb));
-                }
-
-                if (iType.GetInterfaces().Contains(typeof(IView)))
-                    context.RegisterView(item.name, oType, iType);
-
-                if (iType.GetInterfaces().Contains(typeof(IModule)))
-                    context.RegisterModule(item.name ?? item._ref, oType, iType);
-
-                if (iType.GetInterfaces().Contains(typeof(IService)))
-                    context.RegisterService(item.name ?? item._ref, oType, iType);
-            }
-        }
-        /// <summary>
-        /// Loads the manifest and ites assemblies into the appdomain
+        /// Build the manifest registry and loads it's assemblies into the appdomain
         /// </summary>
         private void LoadManifest()
         {
@@ -75,8 +34,7 @@ namespace Analyser
             foreach (XmlNode item in root.ChildNodes)
             {
                 if (item.NodeType != XmlNodeType.Element) continue;
-
-                if (item.Name == "assemblies")
+                else if (item.Name == "assemblies")
                 {
                     foreach (XmlNode asm in item.ChildNodes)
                     {
@@ -91,10 +49,8 @@ namespace Analyser
                         if (asmsloaded.Contains(mitem.assemb)) continue;
                         AppDomain.CurrentDomain.Load(mitem.assemb);
                     }
-                    continue;
                 }
-
-                if (item.Name == "singletons")
+                else if (item.Name == "singletons")
                 {
                     foreach (XmlNode singleton in item.ChildNodes)
                     {
@@ -111,10 +67,8 @@ namespace Analyser
                         };
                         manifest.Add(mitem);
                     }
-                    continue;
                 }
-
-                if (item.Name == "injectables")
+                else if (item.Name == "injectables")
                 {
                     foreach (XmlNode intectable in item.ChildNodes)
                     {
@@ -123,17 +77,52 @@ namespace Analyser
                         {
                             type = TypeEnum.injectable,
                             name = intectable.Attributes.GetNamedItem("name") != null ? intectable.Attributes["name"].Value : null,
+                            _ref = intectable.Attributes.GetNamedItem("ref") != null ? intectable.Attributes["ref"].Value : null,
                             inter = intectable.Attributes.GetNamedItem("inter") != null ? intectable.Attributes["inter"].Value : null,
                             impl = intectable.Attributes.GetNamedItem("impl") != null ? intectable.Attributes["impl"].Value : null,
                             assemb = intectable.Attributes.GetNamedItem("assemb") != null ? intectable.Attributes["assemb"].Value : null,
-                            _ref = intectable.Attributes.GetNamedItem("ref") != null ? intectable.Attributes["ref"].Value : null,
                             activate = intectable.Attributes.GetNamedItem("activate") != null ? bool.Parse(intectable.Attributes["activate"].Value) : false,
                         };
                         manifest.Add(mitem);
                     }
-                    continue;
                 }
-
+            }
+        }
+        /// <summary>
+        /// Creates the context singleton and registers all manifest items
+        /// </summary>
+        /// <returns></returns>
+        private void LoadContext()
+        {
+            ManifestItem contextItem = manifest.First(p => p.name == "Context");
+            // instantiate Context Singleton
+            context = (IContext)AppDomain.CurrentDomain.CreateInstanceAndUnwrap(contextItem.assemb, contextItem.impl);
+            // load from manifest
+            foreach (ManifestItem item in manifest.Where(p => p.name != "Context" && p._ref != "Context" && p.type != TypeEnum.assembly))
+            {
+                Type iType = null;
+                Type oType = null;
+                if (!string.IsNullOrEmpty(item._ref))
+                {
+                    if (!context.Services.ContainsKey(item._ref))
+                        throw new Exception(string.Concat("Could not resolve reference to ", item._ref));
+                    ObjectImpl impl = context.Services[item._ref];
+                    iType = impl.iType;
+                    oType = impl.oType;
+                }
+                else
+                {
+                    iType = Type.GetType(item.inter);
+                    oType = Type.GetType(string.Concat(item.impl, ", ", item.assemb));
+                }
+                if (iType.GetInterfaces().Contains(typeof(IView)))
+                    context.RegisterView(item.name, oType, iType);
+                else if (iType.GetInterfaces().Contains(typeof(IModule)))
+                    context.RegisterModule(item.name ?? item._ref, oType, iType);
+                else if (iType.GetInterfaces().Contains(typeof(IService)))
+                    context.RegisterService(item.name ?? item._ref, oType, iType);
+                else
+                    throw new Exception(string.Concat("Could not resolve manifest item ", item.inter));
             }
         }
     }

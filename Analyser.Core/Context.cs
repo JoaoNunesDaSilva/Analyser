@@ -18,31 +18,31 @@ namespace Analyser.Core
         public IShell Shell { get; private set; }
         public Context()
         {
-            Views = new Dictionary<string, ImplementationObj>();
-            Modules = new Dictionary<string, ImplementationObj>();
-            Services = new Dictionary<string, ImplementationObj>();
+            Views = new Dictionary<string, ObjectImpl>();
+            Modules = new Dictionary<string, ObjectImpl>();
+            Services = new Dictionary<string, ObjectImpl>();
             ServiceInstances = new Dictionary<string, IService>();
             ModuleInstances = new Dictionary<string, IModule>();
             ViewInstances = new Dictionary<string, IView>();
             refl = new ObjectFactory(this);
         }
-        public Dictionary<string, ImplementationObj> Views { get; private set; }
-        public Dictionary<string, ImplementationObj> Modules { get; private set; }
-        public Dictionary<string, ImplementationObj> Services { get; private set; }
+        public Dictionary<string, ObjectImpl> Views { get; private set; }
+        public Dictionary<string, ObjectImpl> Modules { get; private set; }
+        public Dictionary<string, ObjectImpl> Services { get; private set; }
         public void RegisterView(string name, Type component, Type interf)
         {
             if (!Views.ContainsKey(name))
-                Views.Add(name, new ImplementationObj() { oType = component, iType = interf });
+                Views.Add(name, new ObjectImpl() { oType = component, iType = interf });
         }
         public void RegisterModule(string name, Type module, Type interf)
         {
             if (!Modules.ContainsKey(name))
-                Modules.Add(name, new ImplementationObj() { oType = module, iType = interf });
+                Modules.Add(name, new ObjectImpl() { oType = module, iType = interf });
         }
         public void RegisterService(string name, Type service, Type interf)
         {
             if (!Services.ContainsKey(name))
-                Services.Add(name, new ImplementationObj() { oType = service, iType = interf });
+                Services.Add(name, new ObjectImpl() { oType = service, iType = interf });
         }
         public Dictionary<string, IService> ServiceInstances { get; private set; }
         public Dictionary<string, IModule> ModuleInstances { get; private set; }
@@ -50,11 +50,9 @@ namespace Analyser.Core
         public void Initialize(Window mainWindow)
         {
             this.Shell = (IShell)mainWindow;
-
             // Instantiate register all services
             foreach (string k in this.Services.Keys)
                 CreateService(k);
-
             // Boot up all the modules and register their views
             foreach (string k in this.Modules.Keys)
                 CreateModule(k);
@@ -69,8 +67,7 @@ namespace Analyser.Core
         {
             if (ServiceInstances.ContainsKey(name))
                 return ServiceInstances[name];
-
-            ImplementationObj impl = this.Services[name];
+            ObjectImpl impl = this.Services[name];
             IService service = (IService)refl.CreateInstance(impl);
             ServiceInstances.Add(name, service);
             return service;
@@ -79,8 +76,7 @@ namespace Analyser.Core
         {
             if (ModuleInstances.ContainsKey(name))
                 return ModuleInstances[name];
-
-            ImplementationObj impl = this.Modules[name];
+            ObjectImpl impl = this.Modules[name];
             IModule module = (IModule)refl.CreateInstance(impl);
             ModuleInstances.Add(name, module);
             return module;
@@ -89,8 +85,7 @@ namespace Analyser.Core
         {
             if (ViewInstances.ContainsKey(name))
                 return ViewInstances[name];
-
-            ImplementationObj impl = this.Views[name];
+            ObjectImpl impl = this.Views[name];
             IView view = (IView)refl.CreateInstance(impl);
             ViewInstances.Add(name, view);
             return view;

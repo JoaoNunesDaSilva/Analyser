@@ -56,5 +56,16 @@
 
             </Grid>
         </GroupBox>
+        <GroupBox Header="Preview">
+            <DataGrid ItemsSource="{Binding Source=MCOData}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nº Fiche" Binding="{Binding Path=NoFile}"/>
+                    <DataGridTextColumn Header="Priorite" Binding="{Binding Path=Priorite}"/>
+                    <DataGridTextColumn Header="Libelle" Binding="{Binding Path=Libelle}"/>
+                    <DataGridTextColumn Header="Blocs Aplicatifs A Corriger" Binding="{Binding Path=BlocsAplicatifsACorriger}"/>
+                    <DataGridTextColumn Header="Nature De La Maintenance" Binding="{Binding Path=NatureDeLaMaintenance}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
     </StackPanel>
 </UserControl>

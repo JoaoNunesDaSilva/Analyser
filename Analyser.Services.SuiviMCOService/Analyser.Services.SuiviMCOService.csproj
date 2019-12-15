@@ -41,9 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\LookupData.cs" />
-    <Compile Include="Models\MCOData.cs" />
-    <Compile Include="Models\SuiviData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuiviMCOService.cs" />
   </ItemGroup>

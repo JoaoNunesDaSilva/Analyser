@@ -15,15 +15,15 @@ namespace Analyser.Infrastructure.Model
         {
             this.context = context;
         }
-        public object CreateInstance(ImplementationObj impl)
+        public object CreateInstance(ObjectImpl impl)
         {
-            List<ImplementationObj> types = ResolveCtorTypes(impl);
+            List<ObjectImpl> types = ResolveCtorTypes(impl);
             object[] parms = ResolveCtorParams(types);
             return impl.oType.GetConstructor(types.Select(p => p.iType).ToArray()).Invoke(parms);
         }
-        public List<ImplementationObj> ResolveCtorTypes(ImplementationObj impl)
+        public List<ObjectImpl> ResolveCtorTypes(ObjectImpl impl)
         {
-            List<ImplementationObj> types = new List<ImplementationObj>();
+            List<ObjectImpl> types = new List<ObjectImpl>();
             List<ConstructorInfo> ctors = new List<ConstructorInfo>();
             // fetch and sort constructors ascendingly by number of parameters.
             foreach (ConstructorInfo ctor in impl.oType.GetConstructors())
@@ -43,13 +43,12 @@ namespace Analyser.Infrastructure.Model
                     Type parmType = parm.ParameterType;
                     if (parmType == typeof(IContext))
                     {
-                        types.Add(new ImplementationObj() { iType = typeof(IContext), oType = context.GetType() });
+                        types.Add(new ObjectImpl() { iType = typeof(IContext), oType = context.GetType() });
                         continue;
                     }
-
                     // try to resolve param
                     // scan services
-                    KeyValuePair<string, ImplementationObj> implSvc = context.Services.FirstOrDefault(p => p.Value.iType == parmType);
+                    KeyValuePair<string, ObjectImpl> implSvc = context.Services.FirstOrDefault(p => p.Value.iType == parmType);
                     paramResolved = !string.IsNullOrEmpty(implSvc.Key);
                     if (paramResolved)
                     {
@@ -57,7 +56,7 @@ namespace Analyser.Infrastructure.Model
                         continue;
                     }
                     // scan modules
-                    KeyValuePair<string, ImplementationObj> implMod = context.Modules.FirstOrDefault(p => p.Value.iType == parmType);
+                    KeyValuePair<string, ObjectImpl> implMod = context.Modules.FirstOrDefault(p => p.Value.iType == parmType);
                     paramResolved = !string.IsNullOrEmpty(implMod.Key);
                     if (paramResolved)
                     {
@@ -65,7 +64,7 @@ namespace Analyser.Infrastructure.Model
                         continue;
                     }
                     // scan views
-                    KeyValuePair<string, ImplementationObj> implView = context.Views.FirstOrDefault(p => p.Value.iType == parmType);
+                    KeyValuePair<string, ObjectImpl> implView = context.Views.FirstOrDefault(p => p.Value.iType == parmType);
                     paramResolved = !string.IsNullOrEmpty(implView.Key);
                     if (paramResolved)
                     {
@@ -81,34 +80,33 @@ namespace Analyser.Infrastructure.Model
                     ctorResolved = true;
                     break;
                 }
-                // if not resolved yet go to next ctor
+                // if not resolved go to next ctor
             }
 
             if (ctorResolved)
                 return types;
             else
-                return new List<ImplementationObj>();
+                return new List<ObjectImpl>();
         }
-        public object[] ResolveCtorParams(List<ImplementationObj> types)
+        public object[] ResolveCtorParams(List<ObjectImpl> types)
         {
-            List<object> objs = new List<object>();
-            foreach (ImplementationObj impl in types)
+            List<object> instances = new List<object>();
+            foreach (ObjectImpl impl in types)
             {
                 object instance = null;
                 if (impl.iType == typeof(IContext))
                     instance = this.context;
                 else if (context.ServiceInstances.Any(p => impl.iType.IsAssignableFrom(p.Value.GetType())))
-                    instance = context.ServiceInstances.FirstOrDefault(p => impl.iType.IsAssignableFrom(p.Value.GetType())).Value;
+                    instance = context.ServiceInstances.First(p => impl.iType.IsAssignableFrom(p.Value.GetType())).Value;
                 else if (context.ModuleInstances.Any(p => impl.iType.IsAssignableFrom(p.Value.GetType())))
-                    instance = context.ModuleInstances.FirstOrDefault(p => impl.iType.IsAssignableFrom(p.Value.GetType())).Value;
+                    instance = context.ModuleInstances.First(p => impl.iType.IsAssignableFrom(p.Value.GetType())).Value;
                 else if (context.ViewInstances.Any(p => impl.iType.IsAssignableFrom(p.Value.GetType())))
-                    instance = context.ViewInstances.FirstOrDefault(p => impl.iType.IsAssignableFrom(p.Value.GetType())).Value;
+                    instance = context.ViewInstances.First(p => impl.iType.IsAssignableFrom(p.Value.GetType())).Value;
                 else
                 {
-                    List<ImplementationObj> ctorTypes = ResolveCtorTypes(impl);
+                    List<ObjectImpl> ctorTypes = ResolveCtorTypes(impl);
                     object[] parms = ResolveCtorParams(ctorTypes);
                     instance = impl.oType.GetConstructor(ctorTypes.Select(p => p.iType).ToArray()).Invoke(parms);
-
                     InjectableAttribute nameAttr = impl.oType.GetCustomAttribute<InjectableAttribute>();
                     if (instance is IService && !context.ServiceInstances.ContainsKey(nameAttr.Name))
                         context.ServiceInstances.Add(nameAttr.Name, (IService)instance);
@@ -116,12 +114,10 @@ namespace Analyser.Infrastructure.Model
                         context.ModuleInstances.Add(nameAttr.Name, (IModule)instance);
                     else if (instance is IView && !context.ViewInstances.ContainsKey(nameAttr.Name))
                         context.ViewInstances.Add(nameAttr.Name, (IView)instance);
-
                 }
-                objs.Add(instance);
+                instances.Add(instance);
             }
-            return objs.Count() > 0 ? objs.ToArray() : new object[] { };
+            return instances.Count() > 0 ? instances.ToArray() : new object[] { };
         }
-
     }
 }

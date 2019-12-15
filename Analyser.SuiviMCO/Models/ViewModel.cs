@@ -1,7 +1,9 @@
 ﻿using Analyser.Infrastructure.Interfaces;
+using Analyser.Infrastructure.Model;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -37,6 +39,19 @@ namespace Analyser.SuiviMCO.Models
             {
                 _MCOFile = value;
                 OnPropertyChanged("MCOFile");
+            }
+        }
+        ObservableCollection<MCOData> _MCOData;
+        public ObservableCollection<MCOData> MCOData
+        {
+            get
+            {
+                return _MCOData;
+            }
+            set
+            {
+                _MCOData = value;
+                OnPropertyChanged("MCOData");
             }
         }
         string _DataFile;

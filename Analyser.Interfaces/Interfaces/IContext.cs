@@ -11,9 +11,9 @@ namespace Analyser.Infrastructure.Interfaces
     public interface IContext
     {
         IShell Shell { get; }
-        Dictionary<string, ImplementationObj> Views { get; }
-        Dictionary<string, ImplementationObj> Modules { get; }
-        Dictionary<string, ImplementationObj> Services { get; }
+        Dictionary<string, ObjectImpl> Views { get; }
+        Dictionary<string, ObjectImpl> Modules { get; }
+        Dictionary<string, ObjectImpl> Services { get; }
         Dictionary<string, IService> ServiceInstances { get; }
         Dictionary<string, IModule> ModuleInstances { get; }
         Dictionary<string, IView> ViewInstances { get; }

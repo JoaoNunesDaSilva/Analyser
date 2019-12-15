@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Analyser.Infrastructure.Model
 {
-    public class ImplementationObj
+    public class ObjectImpl
     {
         public Type iType { get; set; }
         public Type oType { get; set; }
-
     }
 }

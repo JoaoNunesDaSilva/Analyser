@@ -52,7 +52,9 @@
   <ItemGroup>
     <Compile Include="Interfaces\ILogParserModel.cs" />
     <Compile Include="Interfaces\ISuiviMCOModel.cs" />
-    <Compile Include="Model\ImplementationObj.cs" />
+    <Compile Include="Model\LookupData.cs" />
+    <Compile Include="Model\MCOData.cs" />
+    <Compile Include="Model\ObjectImpl.cs" />
     <Compile Include="Model\InjectableAttribute.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="Interfaces\IContext.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Interfaces\IShell.cs" />
     <Compile Include="Interfaces\ISuiviMCOService.cs" />
     <Compile Include="Interfaces\ISuiviMCO.cs" />
+    <Compile Include="Model\SuiviData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\ObjectFactory.cs" />
   </ItemGroup>

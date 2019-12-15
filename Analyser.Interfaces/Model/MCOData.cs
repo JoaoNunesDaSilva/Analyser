@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Analyser.Services.Models
+namespace Analyser.Infrastructure.Model
 {
+
     public class MCOData
     {
         public MCOData(string[] data)

@@ -19,26 +19,21 @@ namespace Analyser
         IContext context;
         public App() : base()
         {
-            try
-            {
-                // Bootstrap
-                Bootstrap();
-                // Load Window
-                this.MainWindow = new MainWindow();
-                this.MainWindow.Show();
-                // Tell context which is the shell
-                context.Initialize(this.MainWindow);
-            }
-            catch { }
-            finally { }
+            StartApplication();
         }
 
-        private void Bootstrap()
+        private void StartApplication()
         {
             try
             {
                 bootstrapper = new Bootstrapper();
+                // Get context singleton from boot up process
                 context = bootstrapper.Load();
+                // Load main window
+                this.MainWindow = new MainWindow();
+                this.MainWindow.Show();
+                // Initialize context singleton
+                context.Initialize(this.MainWindow);
             }
             catch
             {

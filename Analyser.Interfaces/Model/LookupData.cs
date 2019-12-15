@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyser.Services.Models
+namespace Analyser.Infrastructure.Model
 {
     public class LookupData
     {
