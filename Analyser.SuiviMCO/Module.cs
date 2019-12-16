@@ -89,7 +89,7 @@ namespace Analyser.SuiviMCO
             loadDataMenuItem = context.Shell.AddMenuItem(ModuleMenu, "_Load Data", "LoadDataSuiviMCO", Commands.LoadData, CanExecuteLoadData, ExecuteLoadData);
 
             Model = new ViewModel();
-            view = new View(context, Model)
+            view = new View(context, Model, service)
             {
                 DataContext = Model
             };

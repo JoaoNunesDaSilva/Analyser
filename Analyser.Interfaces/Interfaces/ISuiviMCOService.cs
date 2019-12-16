@@ -10,8 +10,11 @@ namespace Analyser.Infrastructure.Interfaces
 {
     public interface ISuiviMCOService : IService
     {
+        ObservableCollection<MCOData> AllMCOData { get; }
         ObservableCollection<MCOData> MCOData { get; }
         ObservableCollection<LookupData> LookupData { get; }
         void LoadDataFromFiles(ISuiviMCO module);
+        ObservableCollection<FilterModel> CreateColumnFilters(int colIndex);
+        ObservableCollection<MCOData> ApplyMCOFilter(int colIndex, ObservableCollection<FilterModel> activeFilters);
     }
 }

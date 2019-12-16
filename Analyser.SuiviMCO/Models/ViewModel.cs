@@ -15,7 +15,7 @@ namespace Analyser.SuiviMCO.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        string _LookupFile;
+        string _LookupFile = @"C:\La Medicale\Analyser\Extracts\Suivi_MCO_LOOKUP";
         public string LookupFile
         {
             get
@@ -28,7 +28,20 @@ namespace Analyser.SuiviMCO.Models
                 OnPropertyChanged("LookupFile");
             }
         }
-        string _MCOFile;
+        ObservableCollection<LookupData> _LookupData;
+        public ObservableCollection<LookupData> LookupData
+        {
+            get
+            {
+                return _LookupData;
+            }
+            set
+            {
+                _LookupData = value;
+                OnPropertyChanged("LookupData");
+            }
+        }
+        string _MCOFile = @"C:\La Medicale\Analyser\Extracts\Suivi_MCO";
         public string MCOFile
         {
             get
@@ -54,7 +67,7 @@ namespace Analyser.SuiviMCO.Models
                 OnPropertyChanged("MCOData");
             }
         }
-        string _DataFile;
+        string _DataFile = @"C:\La Medicale\Analyser\Extracts\Suivi.data";
         public string DataFile
         {
             get
@@ -65,6 +78,20 @@ namespace Analyser.SuiviMCO.Models
             {
                 _DataFile = value;
                 OnPropertyChanged("DataFile");
+            }
+        }
+
+        ObservableCollection<FilterModel> _Filters;
+        public ObservableCollection<FilterModel> Filters
+        {
+            get
+            {
+                return _Filters;
+            }
+            set
+            {
+                _Filters = value;
+                OnPropertyChanged("Filters");
             }
         }
 

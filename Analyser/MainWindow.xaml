@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Analyser"
         WindowState="Maximized"
-        FontFamily="Segoe UI" FontSize="16px"
+        FontFamily="Segoe UI" FontSize="14px"
         Title="MainWindow">
+    <Window.Resources>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220" />
@@ -15,7 +17,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!-- Menu -->
-        <Menu Grid.ColumnSpan="2" x:Name="MainMenu">
+        <Menu Grid.ColumnSpan="2" x:Name="MainMenu" FocusManager.IsFocusScope="True">
             <MenuItem Header="_File">
                 <MenuItem Command="local:Commands.New" x:Name="FileNewMI"
                           CommandManager.CanExecute="CanExecuteNew" CommandManager.Executed="ExecuteNew" 
@@ -46,11 +48,8 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <DockPanel Grid.Column="1" Grid.Row="1" >
-            <TabControl x:Name="ContentView">
-            </TabControl>
-        </DockPanel>
+        <TabControl  Grid.Column="1" Grid.Row="1" x:Name="ContentView" />
         <!-- Side Panel -->
-        <ListBox Grid.Row="1" x:Name="MainSideBar"></ListBox>
+        <ListBox Grid.Row="1" x:Name="MainSideBar" />
     </Grid>
 </Window>

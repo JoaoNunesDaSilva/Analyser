@@ -18,7 +18,6 @@ namespace Analyser.SuiviMCO
                 new KeyGesture(Key.N, ModifierKeys.Control)
           }
         );
-
         public static readonly RoutedUICommand LoadData = new RoutedUICommand(
           "_Load Data",
           "LoadDataSuiviMCO",
@@ -69,5 +68,29 @@ namespace Analyser.SuiviMCO
           }
         );
 
+        public static readonly RoutedUICommand FilterColumnOk = new RoutedUICommand(
+             "Ok",
+             "FilterColumnOk",
+             typeof(Commands)
+           );
+
+        public static readonly RoutedUICommand FilterColumnAll = new RoutedUICommand(
+             "Ok",
+             "FilterColumnOk",
+             typeof(Commands)
+           );
+
+        public static readonly RoutedUICommand FilterColumnClear = new RoutedUICommand(
+             "Clear",
+             "FilterColumnClear",
+             typeof(Commands)
+           );
+
+
+        public static readonly RoutedUICommand FilterColumn = new RoutedUICommand(
+             "",
+             "FilterColumn",
+             typeof(Commands)
+           );
     }
 }

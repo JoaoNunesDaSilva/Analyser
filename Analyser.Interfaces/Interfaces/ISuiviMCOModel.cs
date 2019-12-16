@@ -13,6 +13,8 @@ namespace Analyser.Infrastructure.Interfaces
         string LookupFile { get; set; }
         string MCOFile { get; set; }
         ObservableCollection<MCOData> MCOData { get; set; }
+        ObservableCollection<LookupData> LookupData { get; set; }
         string DataFile { get; set; }
+        ObservableCollection<FilterModel> Filters { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace Analyser.Infrastructure.Model
             Niveu1 = data[14];
             Niveu2 = data[15];
             Statut = data[16];
-            DateLivraisonCible = !string.IsNullOrEmpty(data[17]) ? DateTime.Parse(data[17]) : null as DateTime?;
+            DateLivraisonCible = !string.IsNullOrEmpty(data[17]) ? DateTime.Parse(data[17]).Date : null as DateTime?;
             TypeMaintenance = data[18];
             DirectionResponsable = data[19];
             SecteurDeRecette = data[20];
@@ -37,6 +37,7 @@ namespace Analyser.Infrastructure.Model
             SousSecteur = data[22];
             Gamme = data[23];
         }
+        public LookupData Ticket { get; set; }
         public string NoFiche { get; set; }
         public string Priorite { get; set; }
         public string Libelle { get; set; }

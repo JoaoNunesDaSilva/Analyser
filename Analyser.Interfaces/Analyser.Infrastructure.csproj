@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\ILogParserModel.cs" />
     <Compile Include="Interfaces\ISuiviMCOModel.cs" />
+    <Compile Include="Model\FilterModel.cs" />
     <Compile Include="Model\LookupData.cs" />
     <Compile Include="Model\MCOData.cs" />
     <Compile Include="Model\ObjectImpl.cs" />

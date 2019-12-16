@@ -110,6 +110,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\close_mini_1522.png" />
     <Content Include="Manifest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

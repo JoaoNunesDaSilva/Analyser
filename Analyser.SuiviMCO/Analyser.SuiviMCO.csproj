@@ -72,6 +72,35 @@
       <Name>Analyser.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\download_1453.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\file_js_1763.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\directory_search_1623.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\collection_989.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder_fill_1774.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save_item_1409.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\close_1511.png" />
+    <Resource Include="Images\close_mini_1522.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\filter_1384.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cut_corner_round_889.png" />
+    <Resource Include="Images\directory_close_1654.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)Analyser\$(OutDir)Modules" /Y</PostBuildEvent>

@@ -76,8 +76,6 @@ namespace Analyser
 
         #region ContentView Handling
 
-
-
         public void LoadView(string header, IView view, IModule module)
         {
             ModuleView modView = new ModuleView(view, module);
@@ -87,6 +85,10 @@ namespace Analyser
             tab.Focus();
         }
 
+        #endregion
+
+        #region Sidebar Handling
+        
         #endregion
 
         #region New Command
