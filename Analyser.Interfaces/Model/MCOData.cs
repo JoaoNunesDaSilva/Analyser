@@ -38,6 +38,7 @@ namespace Analyser.Infrastructure.Model
             Gamme = data[23];
         }
         public LookupData Ticket { get; set; }
+        public SuiviData Traitement { get; set; }
         public string NoFiche { get; set; }
         public string Priorite { get; set; }
         public string Libelle { get; set; }

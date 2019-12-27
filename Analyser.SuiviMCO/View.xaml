@@ -1,11 +1,15 @@
 ﻿<UserControl x:Class="Analyser.SuiviMCO.View"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:local="clr-namespace:Analyser.SuiviMCO"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:Windows="clr-namespace:System.Windows;assembly=PresentationCore"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <UserControl.Resources>
         <DataTemplate x:Key="FiltersTemplate">
             <StackPanel>
-                <CheckBox Content="{Binding Text}" IsChecked="{Binding Checked}" />
+                <CheckBox IsChecked="{Binding Checked}" >
+                    <TextBlock Text="{Binding Text}" />
+                </CheckBox>
             </StackPanel>
         </DataTemplate>
         <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -95,6 +99,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.Column ="0" FontWeight="DemiBold" Width="120px">Lookup File</Label>
                 <TextBox Grid.Row="0" Grid.Column ="1" Text="{Binding Path=LookupFile}" ></TextBox>
@@ -109,6 +114,13 @@
                     Command="local:Commands.ChooseMCOFileSuiviMCO"
                     CommandManager.CanExecute="ChooseMCOFile_CanExecute" 
                     CommandManager.Executed="ChooseMCOFile_Executed">Load</Button>
+
+                <Label Grid.Row="2" Grid.Column ="0" FontWeight="DemiBold" Width="120px">MCO File E.Client</Label>
+                <TextBox Grid.Row="2" Grid.Column ="1" Text="{Binding Path=MCOFileEspaceClient}"></TextBox>
+                <Button Grid.Row="2" Grid.Column ="2" 
+                    Command="local:Commands.ChooseMCOFileSuiviMCOEspaceClient"
+                    CommandManager.CanExecute="ChooseMCOFileEspaceClient_CanExecute" 
+                    CommandManager.Executed="ChooseMCOFileEspaceClient_Executed">Load</Button>
             </Grid>
         </GroupBox>
         <GroupBox Grid.Row="1">
@@ -147,43 +159,69 @@
                     <TextBlock FontWeight="Bold">Front MCO</TextBlock>
                 </StackPanel>
             </GroupBox.Header>
-            <DataGrid ItemsSource="{Binding MCOData}"  
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Label>Nro Fiches</Label>
+                    <Label Content="{Binding NroFiches}"></Label>
+                    <Button
+                        Command="local:Commands.ShowAll"
+                        CommandManager.CanExecute="ShowAll_CanExecute" 
+                        CommandManager.Executed="ShowAll_Executed">Tout</Button>
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding MCOData}"  Name="dgMCO"
                     CanUserReorderColumns="False"
                     Margin="2,2"
+                    Grid.Row="1"
+                    FrozenColumnCount="3"
                     AutoGenerateColumns="False" 
                     RowBackground="White"
                     AlternatingRowBackground="Gainsboro"  
                     AlternationCount="2">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nº Fiche" IsReadOnly="True" Binding="{Binding NoFiche}"/>
-                    <DataGridTextColumn Header="Priorite" IsReadOnly="True" Binding="{Binding Priorite}"/>
-                    <DataGridTextColumn Header="Gravite" IsReadOnly="True" Binding="{Binding Ticket.Gravite}"/>
-                    <DataGridTextColumn Header="Statut" IsReadOnly="True" Binding="{Binding Statut}"/>
-                    <DataGridTextColumn Header="Libelle" IsReadOnly="True" Binding="{Binding Libelle}"/>
-                    <DataGridTextColumn Header="Date Creation" IsReadOnly="True" Binding="{Binding Ticket.DateCreation}"/>
-                    <DataGridTextColumn Header="Createur De La Fiche" IsReadOnly="True" Binding="{Binding Ticket.CreateurDeLaFiche}"/>
-                    <DataGridTextColumn Header="Diagnostiqueur" IsReadOnly="True" Binding="{Binding Ticket.Diagnostiqueur}"/>
-                    <DataGridTextColumn Header="Correcteur" IsReadOnly="True" Binding="{Binding Ticket.Correcteur}"/>
-                    <DataGridTextColumn Header="Site" IsReadOnly="True" Binding="{Binding Ticket.Site}"/>
-                    <DataGridTextColumn Header="Blocs Aplicatifs A Corriger" IsReadOnly="True" Binding="{Binding BlocsAplicatifsACorriger}"/>
-                    <DataGridTextColumn Header="Nature De La Maintenance" IsReadOnly="True" Binding="{Binding NatureDeLaMaintenance}"/>
-                    <DataGridTextColumn Header="Nature De La Fiche" IsReadOnly="True" Binding="{Binding NatureDeLaFiche}"/>
-                    <DataGridTextColumn Header="Version" IsReadOnly="True" Binding="{Binding Version}"/>
-                    <DataGridTextColumn Header="Niveau 0" IsReadOnly="True" Binding="{Binding Niveu0}"/>
-                    <DataGridTextColumn Header="Niveau 1" IsReadOnly="True" Binding="{Binding Niveu1}"/>
-                    <DataGridTextColumn Header="Type Maintenance" IsReadOnly="True" Binding="{Binding TypeMaintenance}"/>
-                    <DataGridTextColumn Header="Direction Responsable" IsReadOnly="True" Binding="{Binding DirectionResponsable}"/>
-                    <DataGridTextColumn Header="Secteur De Recette" IsReadOnly="True" Binding="{Binding SecteurDeRecette}"/>
-                    <DataGridTextColumn Header="Domaine De Detection" IsReadOnly="True" Binding="{Binding DomaineDeDetection}"/>
-                    <DataGridTextColumn Header="Domaine De Correction" IsReadOnly="True" Binding="{Binding Ticket.DomaineCorrection}"/>
-                    <DataGridTextColumn Header="Secteur De Correction" IsReadOnly="True" Binding="{Binding Ticket.SecteurCorrection}"/>
-                    <DataGridTextColumn Header="Sous Secteur" IsReadOnly="True" Binding="{Binding SousSecteur}"/>
-                    <DataGridTextColumn Header="Gamme" IsReadOnly="True" Binding="{Binding Gamme}"/>
-                    <DataGridTextColumn Header="Modifie Le" IsReadOnly="True" Binding="{Binding Ticket.ModifieLe}"/>
-                    <DataGridTextColumn Header="Fin De Cloture" IsReadOnly="True" Binding="{Binding Ticket.FinDeCloture}"/>
-                    <DataGridTextColumn Header="Date De Derniere Affectation" IsReadOnly="True" Binding="{Binding Ticket.DateDeDerniereAffectation}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nº Fiche" IsReadOnly="True" Binding="{Binding NoFiche}" />
+                        <DataGridTextColumn Header="Priorite" IsReadOnly="True" Binding="{Binding Priorite}"/>
+                        <DataGridTextColumn Header="Gravite" IsReadOnly="True" Binding="{Binding Ticket.Gravite}"/>
+                        <DataGridTextColumn Header="Statut" IsReadOnly="True" Binding="{Binding Statut}"/>
+                        <DataGridTextColumn Header="Libelle" IsReadOnly="True" Binding="{Binding Libelle}"/>
+                        <DataGridTextColumn Header="Date Creation" IsReadOnly="True" Binding="{Binding Ticket.DateCreation}"/>
+                        <DataGridTextColumn Header="Createur De La Fiche" IsReadOnly="True" Binding="{Binding Ticket.CreateurDeLaFiche}"/>
+                        <DataGridTextColumn Header="Diagnostiqueur" IsReadOnly="True" Binding="{Binding Ticket.Diagnostiqueur}"/>
+                        <DataGridTextColumn Header="Correcteur" IsReadOnly="True" Binding="{Binding Ticket.Correcteur}"/>
+                        <DataGridTextColumn Header="Site" IsReadOnly="True" Binding="{Binding Ticket.Site}"/>
+                        <DataGridTextColumn Header="Responsable" IsReadOnly="True" Binding="{Binding Traitement.Responsable}"/>
+                        <DataGridTextColumn Header="Analyse" IsReadOnly="True" Binding="{Binding Traitement.Analyse}"/>
+                        <DataGridTextColumn Header="Analyse Fin" IsReadOnly="True" Binding="{Binding Traitement.AnalyseFin}"/>
+                        <DataGridTextColumn Header="Development" IsReadOnly="True" Binding="{Binding Traitement.Dev}"/>
+                        <DataGridTextColumn Header="Dev.Fin" IsReadOnly="True" Binding="{Binding Traitement.DevFin}"/>
+                        <DataGridTextColumn Header="Recette" IsReadOnly="True" Binding="{Binding Traitement.Recette}"/>
+                        <DataGridTextColumn Header="Recette Fin" IsReadOnly="True" Binding="{Binding Traitement.RecetteFin}"/>
+                        <DataGridTextColumn Header="Production" IsReadOnly="True" Binding="{Binding Traitement.Prod}"/>
+                        <DataGridTextColumn Header="Blocs Aplicatifs A Corriger" IsReadOnly="True" Binding="{Binding BlocsAplicatifsACorriger}"/>
+                        <DataGridTextColumn Header="Nature De La Maintenance" IsReadOnly="True" Binding="{Binding NatureDeLaMaintenance}"/>
+                        <DataGridTextColumn Header="Nature De La Fiche" IsReadOnly="True" Binding="{Binding NatureDeLaFiche}"/>
+                        <DataGridTextColumn Header="Version" IsReadOnly="True" Binding="{Binding Version}"/>
+                        <DataGridTextColumn Header="Niveau 0" IsReadOnly="True" Binding="{Binding Niveu0}"/>
+                        <DataGridTextColumn Header="Niveau 1" IsReadOnly="True" Binding="{Binding Niveu1}"/>
+                        <DataGridTextColumn Header="Type Maintenance" IsReadOnly="True" Binding="{Binding TypeMaintenance}"/>
+                        <DataGridTextColumn Header="Direction Responsable" IsReadOnly="True" Binding="{Binding DirectionResponsable}"/>
+                        <DataGridTextColumn Header="Secteur De Recette" IsReadOnly="True" Binding="{Binding SecteurDeRecette}"/>
+                        <DataGridTextColumn Header="Domaine De Detection" IsReadOnly="True" Binding="{Binding DomaineDeDetection}"/>
+                        <DataGridTextColumn Header="Domaine De Correction" IsReadOnly="True" Binding="{Binding Ticket.DomaineCorrection}"/>
+                        <DataGridTextColumn Header="Secteur De Correction" IsReadOnly="True" Binding="{Binding Ticket.SecteurCorrection}"/>
+                        <DataGridTextColumn Header="Sous Secteur" IsReadOnly="True" Binding="{Binding SousSecteur}"/>
+                        <DataGridTextColumn Header="Gamme" IsReadOnly="True" Binding="{Binding Gamme}"/>
+                        <DataGridTextColumn Header="Modifie Le" IsReadOnly="True" Binding="{Binding Ticket.ModifieLe}"/>
+                        <DataGridTextColumn Header="Fin De Cloture" IsReadOnly="True" Binding="{Binding Ticket.FinDeCloture}"/>
+                        <DataGridTextColumn Header="Date De Derniere Affectation" IsReadOnly="True" Binding="{Binding Ticket.DateDeDerniereAffectation}"/>
+                        <DataGridTextColumn Header="Report vs." IsReadOnly="True" Binding="{Binding Traitement.Report}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            
         </GroupBox>
     </Grid>
 </UserControl>

@@ -18,6 +18,15 @@ namespace Analyser.SuiviMCO
                 new KeyGesture(Key.N, ModifierKeys.Control)
           }
         );
+        public static readonly RoutedUICommand ShowAll = new RoutedUICommand(
+        "_Tout",
+        "ShowAll",
+        typeof(Commands),
+        new InputGestureCollection()
+        {
+                new KeyGesture(Key.T, ModifierKeys.Control)
+        }
+      );
         public static readonly RoutedUICommand LoadData = new RoutedUICommand(
           "_Load Data",
           "LoadDataSuiviMCO",
@@ -47,7 +56,16 @@ namespace Analyser.SuiviMCO
                 new KeyGesture(Key.M, ModifierKeys.Control)
           }
         );
-        
+        public static readonly RoutedUICommand ChooseMCOFileSuiviMCOEspaceClient = new RoutedUICommand(
+          "Choose MCO _E.C. File",
+          "ChooseMCOFileSuiviMCOEspaceClient",
+          typeof(Commands),
+          new InputGestureCollection()
+          {
+                new KeyGesture(Key.E, ModifierKeys.Control)
+          }
+        );
+
         public static readonly RoutedUICommand ChooseDataFileSuiviMCO = new RoutedUICommand(
           "Choose _Data File" ,
           "ChooseDataFileSuiviMCO",

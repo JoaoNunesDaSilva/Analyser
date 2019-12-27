@@ -12,10 +12,10 @@ namespace Analyser.Infrastructure.Model
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public FilterModel(string text)
+        public FilterModel(string text, bool ischecked)
         {
             Text = text;
-            Checked = true;
+            Checked = ischecked;
         }
         string _text;
         public string Text

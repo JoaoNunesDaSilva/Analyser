@@ -1,5 +1,6 @@
 ﻿using Analyser.Infrastructure.Interfaces;
 using Analyser.Infrastructure.Model;
+using Analyser.SuiviMCO.Helpers;
 using Analyser.SuiviMCO.Models;
 using Microsoft.Win32;
 using System;
@@ -85,6 +86,19 @@ namespace Analyser.SuiviMCO
             e.Handled = true;
         }
 
+        private void ChooseMCOFileEspaceClient_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ChooseMCOFileEspaceClient_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                viewModel.MCOFileEspaceClient = openFileDialog.FileName;
+            e.Handled = true;
+        }
+
         private void ChooseDataFile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -135,7 +149,18 @@ namespace Analyser.SuiviMCO
             Button okButton = (Button)sender;
             int colIndex = (int)okButton.Tag;
             this.viewModel.MCOData = this.service.ApplyMCOFilter(colIndex, viewModel.Filters);
-            activeFilter.IsChecked = false;
+            activeFilter.IsChecked = false; // Close popup
+            ToggleButton toggle = (ToggleButton)((Panel)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent).Children[0];
+            if (!viewModel.Filters.Any(p => p.Checked == false))
+            {
+                toggle.Background = Brushes.Transparent;
+                toggle.Foreground = Brushes.Black;
+            }
+            else
+            {
+                toggle.Background = Brushes.Red;
+                toggle.Foreground = Brushes.White;
+            }
             e.Handled = true;
         }
 
@@ -147,8 +172,9 @@ namespace Analyser.SuiviMCO
         {
             Button ClearButton = (Button)sender;
             int colIndex = (int)ClearButton.Tag;
-            foreach (FilterModel model in viewModel.Filters.Where(p=>p.Checked == true))
+            foreach (FilterModel model in viewModel.Filters.Where(p => p.Checked == true))
                 model.Checked = false;
+
             e.Handled = true;
         }
 
@@ -162,7 +188,27 @@ namespace Analyser.SuiviMCO
             int colIndex = (int)ClearButton.Tag;
             foreach (FilterModel model in viewModel.Filters.Where(p => p.Checked == false))
                 model.Checked = true;
+
+
             e.Handled = true;
         }
+
+        private void ShowAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        private void ShowAll_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.MCOData = this.service.ShowAll();
+            this.viewModel.Filters = new ObservableCollection<FilterModel>();
+            foreach (DataGridColumnHeader header in VisualTreeHelperClass.GetVisualChildCollection<DataGridColumnHeader>(dgMCO))
+            {
+                ToggleButton toggle = VisualTreeHelperClass.GetVisualChildCollection<ToggleButton>(header).First();
+                toggle.Background = Brushes.Transparent;
+                toggle.Foreground = Brushes.Black;
+            }
+            e.Handled = true;
+        }
+
     }
 }
