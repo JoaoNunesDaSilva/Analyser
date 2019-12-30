@@ -4,20 +4,21 @@
         xmlns:local="clr-namespace:Analyser"
         WindowState="Maximized"
         FontFamily="Segoe UI" FontSize="14px"
-        Title="MainWindow">
+        Title="MainWindow" FocusManager.IsFocusScope="true" >
     <Window.Resources>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <!-- Menu -->
-        <Menu Grid.ColumnSpan="2" x:Name="MainMenu" FocusManager.IsFocusScope="True">
+        <!-- Menu Bar -->
+        <Menu  Grid.Column="0"  Grid.Row="0" Grid.ColumnSpan="3" x:Name="MainMenu" FocusManager.IsFocusScope="True">
             <MenuItem Header="_File">
                 <MenuItem Command="local:Commands.New" x:Name="FileNewMI"
                           CommandManager.CanExecute="CanExecuteNew" CommandManager.Executed="ExecuteNew" 
@@ -48,8 +49,10 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <TabControl  Grid.Column="1" Grid.Row="1" x:Name="ContentView" />
         <!-- Side Panel -->
-        <ListBox Grid.Row="1" x:Name="MainSideBar" />
+        <ListBox Width="auto" Grid.Column="0" Grid.Row="1" x:Name="MainSideBar"  HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Column="1" Grid.Row="1" Width="5"  HorizontalAlignment="Stretch"/>
+        <!-- Content Panel -->
+        <TabControl Grid.Column="2" Grid.Row="1" x:Name="ContentView" HorizontalAlignment="Stretch" />
     </Grid>
 </Window>

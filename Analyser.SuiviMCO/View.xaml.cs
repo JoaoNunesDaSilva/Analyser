@@ -59,70 +59,6 @@ namespace Analyser.SuiviMCO
             }
         }
 
-
-        private void ChooseLookupFile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void ChooseLookupFile_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-                viewModel.LookupFile = openFileDialog.FileName;
-            e.Handled = true;
-        }
-
-        private void ChooseMCOFile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void ChooseMCOFile_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-                viewModel.MCOFile = openFileDialog.FileName;
-            e.Handled = true;
-        }
-
-        private void ChooseMCOFileEspaceClient_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void ChooseMCOFileEspaceClient_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-                viewModel.MCOFileEspaceClient = openFileDialog.FileName;
-            e.Handled = true;
-        }
-
-        private void ChooseDataFile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void ChooseDataFile_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-                viewModel.DataFile = openFileDialog.FileName;
-            e.Handled = true;
-        }
-        private void SetDataFile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void SetDataFile_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            if (saveFileDialog.ShowDialog() == true)
-                viewModel.DataFile = saveFileDialog.FileName;
-            e.Handled = true;
-        }
         private void FilterColumn_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -158,8 +94,8 @@ namespace Analyser.SuiviMCO
             }
             else
             {
-                toggle.Background = Brushes.Red;
-                toggle.Foreground = Brushes.White;
+                toggle.Background = Brushes.Green;
+                toggle.Foreground = Brushes.Red;
             }
             e.Handled = true;
         }

@@ -27,6 +27,17 @@ namespace Analyser.SuiviMCO
                 new KeyGesture(Key.T, ModifierKeys.Control)
         }
       );
+
+        public static readonly RoutedUICommand Config = new RoutedUICommand(
+          "_Configurations",
+          "ConfigSuiviMCO",
+          typeof(Commands),
+          new InputGestureCollection()
+          {
+                new KeyGesture(Key.C, ModifierKeys.Control)
+          }
+        );
+
         public static readonly RoutedUICommand LoadData = new RoutedUICommand(
           "_Load Data",
           "LoadDataSuiviMCO",

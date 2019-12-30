@@ -117,9 +117,11 @@ namespace Analyser.Services
 
                 model.MCOData = AllMCOData = MCOData;
 
-
                 filesLoaded = true;
 
+                // Populate grid column templates
+
+                LoadLookups();
             }
             catch (Exception) { }
             finally
@@ -432,10 +434,61 @@ namespace Analyser.Services
             return new ObservableCollection<MCOData>(MCOData);
         }
 
-        public ObservableCollection<MCOData> ShowAll() {
+        public ObservableCollection<MCOData> ShowAll()
+        {
+            if (AllMCOData == null) new ObservableCollection<MCOData>();
             MCOData = AllMCOData;
             activeFilters = new Dictionary<int, ObservableCollection<FilterModel>>();
             return new ObservableCollection<MCOData>(MCOData);
         }
+
+        #region Lookups
+
+        private void LoadLookups()
+        {
+            model.Priorite = LookupData.OrderBy(p=>p.Priorite).Select(p => p.Priorite).Distinct().ToList();
+            model.Gravite = LookupData.OrderBy(p => p.Gravite).Select(p => p.Gravite).Distinct().ToList();
+            model.Statut = LookupData.OrderBy(p => p.Statut).Select(p => p.Statut).Distinct().ToList();
+            model.Createur = LookupData.OrderBy(p => p.CreateurDeLaFiche).Select(p => p.CreateurDeLaFiche).Distinct().ToList();
+            model.Diagnostiqueur = LookupData.OrderBy(p => p.Diagnostiqueur).Select(p => p.Diagnostiqueur).Distinct().ToList();
+            model.Correcteur = LookupData.OrderBy(p => p.Correcteur).Select(p => p.Correcteur).Distinct().ToList();
+            model.Site = LookupData.OrderBy(p => p.Site).Select(p => p.Site).Distinct().ToList();
+            model.Responsable = new List<string>() {
+                "",
+                "André MACHADO",
+                "Catherine BARRAULT",
+                "Christophe BODA",
+                "Hugo OLIVEIRA",
+                "João SILVA",
+                "Tomaz SILVA",
+                "Wallace DAMIÃO"
+            };
+            model.BlocsAplicatifsACorriger = AllMCOData.OrderBy(p => p.BlocsAplicatifsACorriger).Select(p => p.BlocsAplicatifsACorriger).Distinct().ToList();
+            model.NatureDeLaMaintenance = AllMCOData.OrderBy(p => p.NatureDeLaMaintenance).Select(p => p.NatureDeLaMaintenance).Distinct().ToList();
+            model.NatureDeLaFiche = AllMCOData.OrderBy(p => p.NatureDeLaFiche).Select(p => p.NatureDeLaFiche).Distinct().ToList();
+            model.Version = AllMCOData.OrderBy(p => p.Version).Select(p => p.Version).Distinct().ToList();
+            model.TypeMaintenance = LookupData.OrderBy(p => p.TypeMaintenance).Select(p => p.TypeMaintenance).Distinct().ToList();
+            model.DirectionResponsable = AllMCOData.OrderBy(p => p.DirectionResponsable).Select(p => p.DirectionResponsable).Distinct().ToList();
+            model.SecteurDeRecette = AllMCOData.OrderBy(p => p.SecteurDeRecette).Select(p => p.SecteurDeRecette).Distinct().ToList();
+            model.DomaineDeDetection = AllMCOData.OrderBy(p => p.DomaineDeDetection).Select(p => p.DomaineDeDetection).Distinct().ToList();
+            model.DomaineCorrection = LookupData.OrderBy(p => p.DomaineCorrection).Select(p => p.DomaineCorrection).Distinct().ToList();
+            model.SecteurCorrection = LookupData.OrderBy(p => p.SecteurCorrection).Select(p => p.SecteurCorrection).Distinct().ToList();
+            model.SousSecteur = AllMCOData.OrderBy(p => p.SousSecteur).Select(p => p.SousSecteur).Distinct().ToList();
+            model.Gamme = AllMCOData.OrderBy(p => p.Gamme).Select(p => p.Gamme).Distinct().ToList();
+            model.Report = new List<string>() {
+                "",
+                "M19B",
+                "M20A",
+                "M20B",
+                "M21A",
+                "M21B",
+                "M22A",
+                "M22B"
+            };
+
+
+        }
+        #endregion
+
     }
 }

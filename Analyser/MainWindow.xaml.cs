@@ -88,7 +88,7 @@ namespace Analyser
         #endregion
 
         #region Sidebar Handling
-        
+
         #endregion
 
         #region New Command
