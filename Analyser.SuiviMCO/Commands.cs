@@ -10,24 +10,32 @@ namespace Analyser.SuiviMCO
     public static class Commands
     {
         public static readonly RoutedUICommand NewSuiviMCO = new RoutedUICommand(
-          "_New Suivi MCO",
-          "NewSuiviMCO",
-          typeof(Commands),
-          new InputGestureCollection()
-          {
-                new KeyGesture(Key.N, ModifierKeys.Control)
-          }
+            "_New Suivi MCO",
+            "NewSuiviMCO",
+            typeof(Commands),
+            new InputGestureCollection()
+            {
+            new KeyGesture(Key.N, ModifierKeys.Control)
+            }
         );
         public static readonly RoutedUICommand ShowAll = new RoutedUICommand(
-        "_Tout",
-        "ShowAll",
-        typeof(Commands),
-        new InputGestureCollection()
-        {
+            "_Tout",
+            "ShowAll",
+            typeof(Commands),
+            new InputGestureCollection()
+            {
                 new KeyGesture(Key.T, ModifierKeys.Control)
-        }
-      );
-
+            }
+        );
+        public static readonly RoutedUICommand RefreshList = new RoutedUICommand(
+           "_Refresh",
+           "RefreshList",
+           typeof(Commands),
+           new InputGestureCollection()
+           {
+                    new KeyGesture(Key.R, ModifierKeys.Control)
+           }
+         );
         public static readonly RoutedUICommand Config = new RoutedUICommand(
           "_Configurations",
           "ConfigSuiviMCO",
@@ -47,7 +55,7 @@ namespace Analyser.SuiviMCO
                 new KeyGesture(Key.L, ModifierKeys.Control)
           }
         );
-        
+
         public static readonly RoutedUICommand ChooseLookupFileSuiviMCO = new RoutedUICommand(
           "Choose _Lookup File",
           "ChooseLookupFileSuiviMCO",
@@ -57,7 +65,7 @@ namespace Analyser.SuiviMCO
                 new KeyGesture(Key.L, ModifierKeys.Control)
           }
         );
-        
+
         public static readonly RoutedUICommand ChooseMCOFileSuiviMCO = new RoutedUICommand(
           "Choose _MCO File",
           "ChooseMCOFileSuiviMCO",
@@ -78,7 +86,7 @@ namespace Analyser.SuiviMCO
         );
 
         public static readonly RoutedUICommand ChooseDataFileSuiviMCO = new RoutedUICommand(
-          "Choose _Data File" ,
+          "Choose _Data File",
           "ChooseDataFileSuiviMCO",
           typeof(Commands),
           new InputGestureCollection()
@@ -86,7 +94,7 @@ namespace Analyser.SuiviMCO
                 new KeyGesture(Key.D, ModifierKeys.Control)
           }
         );
-        
+
         public static readonly RoutedUICommand SetDataFileSuiviMCO = new RoutedUICommand(
           "Set _Data File",
           "SetDataFileSuiviMCO",

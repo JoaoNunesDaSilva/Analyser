@@ -17,5 +17,6 @@ namespace Analyser.Infrastructure.Interfaces
         ObservableCollection<FilterModel> CreateColumnFilters(int colIndex);
         ObservableCollection<MCOData> ApplyMCOFilter(int colIndex, ObservableCollection<FilterModel> activeFilters);
         ObservableCollection<MCOData> ShowAll();
+        void RefreshList();
     }
 }

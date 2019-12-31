@@ -14,28 +14,39 @@ namespace Analyser.Services
     [Injectable("SuiviMCOService")]
     public class SuiviMCOService : ISuiviMCOService
     {
+        #region fields
+        static Regex csvSplit = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
         Dictionary<int, ObservableCollection<FilterModel>> activeFilters = new Dictionary<int, ObservableCollection<FilterModel>>();
         ObservableCollection<FilterModel> currentFilterValues = new ObservableCollection<FilterModel>();
-        bool filesLoaded = false;
         IContext context;
-        ISuiviMCOModel model;
+        ISuiviMCO module;
+        #endregion
+
+        #region properties  
         public ObservableCollection<MCOData> AllMCOData { get; private set; }
         public ObservableCollection<MCOData> MCOData { get; private set; }
         public ObservableCollection<LookupData> LookupData { get; private set; }
         public ObservableCollection<SuiviData> SuiviData { get; private set; }
+        #endregion
 
+        #region  ctor
         public SuiviMCOService(IContext context)
         {
             this.context = context;
+           
+        }
+        #endregion
+
+        #region data loading
+        public void LoadDataFromFiles(ISuiviMCO module)
+        {
+            // initialize all collections 
+            AllMCOData = new ObservableCollection<MCOData>();
             MCOData = new ObservableCollection<MCOData>();
             LookupData = new ObservableCollection<LookupData>();
             SuiviData = new ObservableCollection<SuiviData>();
-        }
-        public void LoadDataFromFiles(ISuiviMCO module)
-        {
-            if (filesLoaded) return;
 
-            model = module.Model;
+            this.module =  module;
 
             FileStream streamLookup = null;
             FileStream streamMCO = null;
@@ -50,13 +61,13 @@ namespace Analyser.Services
             try
             {
 
-                streamLookup = new FileStream(model.LookupFile, FileMode.Open, FileAccess.Read);
-                streamMCO = new FileStream(model.MCOFile, FileMode.Open, FileAccess.Read);
-                streamMCOEspaceClient = new FileStream(model.MCOFileEspaceClient, FileMode.Open, FileAccess.Read);
-                streamData = new FileStream(model.DataFile, FileMode.OpenOrCreate, FileAccess.Read);
+                streamLookup = new FileStream(this.module.Model.LookupFile, FileMode.Open, FileAccess.Read);
+                streamMCO = new FileStream(this.module.Model.MCOFile, FileMode.Open, FileAccess.Read);
+                streamMCOEspaceClient = new FileStream(this.module.Model.MCOFileEspaceClient, FileMode.Open, FileAccess.Read);
+                streamData = new FileStream(this.module.Model.DataFile, FileMode.OpenOrCreate, FileAccess.Read);
 
                 // Lookup file with all the tickets and max detail
-                readerLookup = new StreamReader(streamLookup, Encoding.UTF8, true);
+                readerLookup = new StreamReader(streamLookup, Encoding.Default, true);
                 bool headerline = true;
                 while (!readerLookup.EndOfStream)
                 {
@@ -68,10 +79,10 @@ namespace Analyser.Services
                     }
                     ProcessLookupLine(line);
                 }
-                //module.Model.LookupData = this.LookupData;
+                //this.module.Model.LookupData = this.LookupData;
 
                 // Suivi file with all user customized data
-                readerData = new StreamReader(streamData, Encoding.UTF8, true);
+                readerData = new StreamReader(streamData, Encoding.Default, true);
                 headerline = true;
                 while (!readerData.EndOfStream)
                 {
@@ -84,10 +95,10 @@ namespace Analyser.Services
                     ProcessSuiviLine(line);
                 }
 
-                model.SuiviData = SuiviData;
+                this.module.Model.SuiviData = SuiviData;
 
                 // MCO file filtered in the source for all tickets that matter open or closed
-                readerMCO = new StreamReader(streamMCO, Encoding.UTF8, true);
+                readerMCO = new StreamReader(streamMCO, Encoding.Default, true);
                 headerline = true;
                 while (!readerMCO.EndOfStream)
                 {
@@ -102,7 +113,7 @@ namespace Analyser.Services
 
 
                 // MCO EspaceClient file filtered in the source for all tickets that matter open or closed
-                readerMCOEspaceClient = new StreamReader(streamMCOEspaceClient, Encoding.UTF8, true);
+                readerMCOEspaceClient = new StreamReader(streamMCOEspaceClient, Encoding.Default, true);
                 headerline = true;
                 while (!readerMCOEspaceClient.EndOfStream)
                 {
@@ -115,12 +126,12 @@ namespace Analyser.Services
                     ProcessMCOLine(line);
                 }
 
-                model.MCOData = AllMCOData = MCOData;
+                // sort collection
+                MCOData.OrderByDescending(p => p.NoFiche);
 
-                filesLoaded = true;
+                this.module.Model.MCOData = AllMCOData = MCOData;
 
                 // Populate grid column templates
-
                 LoadLookups();
             }
             catch (Exception) { }
@@ -135,7 +146,6 @@ namespace Analyser.Services
             streamMCO.Close();
             streamData.Close();
         }
-        static Regex csvSplit = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
         private void ProcessMCOLine(string line)
         {
             try
@@ -172,6 +182,9 @@ namespace Analyser.Services
             }
             catch (Exception) { }
         }
+        #endregion
+
+        #region filtering mechanism
         public ObservableCollection<FilterModel> CreateColumnFilters(int colIndex)
         {
             currentFilterValues = new ObservableCollection<FilterModel>();
@@ -433,7 +446,6 @@ namespace Analyser.Services
             }
             return new ObservableCollection<MCOData>(MCOData);
         }
-
         public ObservableCollection<MCOData> ShowAll()
         {
             if (AllMCOData == null) new ObservableCollection<MCOData>();
@@ -441,19 +453,23 @@ namespace Analyser.Services
             activeFilters = new Dictionary<int, ObservableCollection<FilterModel>>();
             return new ObservableCollection<MCOData>(MCOData);
         }
+        public void RefreshList()
+        {
+            LoadDataFromFiles(this.module);
+        }
+        #endregion
 
-        #region Lookups
-
+        #region lookups
         private void LoadLookups()
         {
-            model.Priorite = LookupData.OrderBy(p=>p.Priorite).Select(p => p.Priorite).Distinct().ToList();
-            model.Gravite = LookupData.OrderBy(p => p.Gravite).Select(p => p.Gravite).Distinct().ToList();
-            model.Statut = LookupData.OrderBy(p => p.Statut).Select(p => p.Statut).Distinct().ToList();
-            model.Createur = LookupData.OrderBy(p => p.CreateurDeLaFiche).Select(p => p.CreateurDeLaFiche).Distinct().ToList();
-            model.Diagnostiqueur = LookupData.OrderBy(p => p.Diagnostiqueur).Select(p => p.Diagnostiqueur).Distinct().ToList();
-            model.Correcteur = LookupData.OrderBy(p => p.Correcteur).Select(p => p.Correcteur).Distinct().ToList();
-            model.Site = LookupData.OrderBy(p => p.Site).Select(p => p.Site).Distinct().ToList();
-            model.Responsable = new List<string>() {
+            this.module.Model.Priorite = LookupData.OrderBy(p=>p.Priorite).Select(p => p.Priorite).Distinct().ToList();
+            this.module.Model.Gravite = LookupData.OrderBy(p => p.Gravite).Select(p => p.Gravite).Distinct().ToList();
+            this.module.Model.Statut = LookupData.OrderBy(p => p.Statut).Select(p => p.Statut).Distinct().ToList();
+            this.module.Model.Createur = LookupData.OrderBy(p => p.CreateurDeLaFiche).Select(p => p.CreateurDeLaFiche).Distinct().ToList();
+            this.module.Model.Diagnostiqueur = LookupData.OrderBy(p => p.Diagnostiqueur).Select(p => p.Diagnostiqueur).Distinct().ToList();
+            this.module.Model.Correcteur = LookupData.OrderBy(p => p.Correcteur).Select(p => p.Correcteur).Distinct().ToList();
+            this.module.Model.Site = LookupData.OrderBy(p => p.Site).Select(p => p.Site).Distinct().ToList();
+            this.module.Model.Responsable = new List<string>() {
                 "",
                 "André MACHADO",
                 "Catherine BARRAULT",
@@ -463,19 +479,19 @@ namespace Analyser.Services
                 "Tomaz SILVA",
                 "Wallace DAMIÃO"
             };
-            model.BlocsAplicatifsACorriger = AllMCOData.OrderBy(p => p.BlocsAplicatifsACorriger).Select(p => p.BlocsAplicatifsACorriger).Distinct().ToList();
-            model.NatureDeLaMaintenance = AllMCOData.OrderBy(p => p.NatureDeLaMaintenance).Select(p => p.NatureDeLaMaintenance).Distinct().ToList();
-            model.NatureDeLaFiche = AllMCOData.OrderBy(p => p.NatureDeLaFiche).Select(p => p.NatureDeLaFiche).Distinct().ToList();
-            model.Version = AllMCOData.OrderBy(p => p.Version).Select(p => p.Version).Distinct().ToList();
-            model.TypeMaintenance = LookupData.OrderBy(p => p.TypeMaintenance).Select(p => p.TypeMaintenance).Distinct().ToList();
-            model.DirectionResponsable = AllMCOData.OrderBy(p => p.DirectionResponsable).Select(p => p.DirectionResponsable).Distinct().ToList();
-            model.SecteurDeRecette = AllMCOData.OrderBy(p => p.SecteurDeRecette).Select(p => p.SecteurDeRecette).Distinct().ToList();
-            model.DomaineDeDetection = AllMCOData.OrderBy(p => p.DomaineDeDetection).Select(p => p.DomaineDeDetection).Distinct().ToList();
-            model.DomaineCorrection = LookupData.OrderBy(p => p.DomaineCorrection).Select(p => p.DomaineCorrection).Distinct().ToList();
-            model.SecteurCorrection = LookupData.OrderBy(p => p.SecteurCorrection).Select(p => p.SecteurCorrection).Distinct().ToList();
-            model.SousSecteur = AllMCOData.OrderBy(p => p.SousSecteur).Select(p => p.SousSecteur).Distinct().ToList();
-            model.Gamme = AllMCOData.OrderBy(p => p.Gamme).Select(p => p.Gamme).Distinct().ToList();
-            model.Report = new List<string>() {
+            this.module.Model.BlocsAplicatifsACorriger = AllMCOData.OrderBy(p => p.BlocsAplicatifsACorriger).Select(p => p.BlocsAplicatifsACorriger).Distinct().ToList();
+            this.module.Model.NatureDeLaMaintenance = AllMCOData.OrderBy(p => p.NatureDeLaMaintenance).Select(p => p.NatureDeLaMaintenance).Distinct().ToList();
+            this.module.Model.NatureDeLaFiche = AllMCOData.OrderBy(p => p.NatureDeLaFiche).Select(p => p.NatureDeLaFiche).Distinct().ToList();
+            this.module.Model.Version = AllMCOData.OrderBy(p => p.Version).Select(p => p.Version).Distinct().ToList();
+            this.module.Model.TypeMaintenance = LookupData.OrderBy(p => p.TypeMaintenance).Select(p => p.TypeMaintenance).Distinct().ToList();
+            this.module.Model.DirectionResponsable = AllMCOData.OrderBy(p => p.DirectionResponsable).Select(p => p.DirectionResponsable).Distinct().ToList();
+            this.module.Model.SecteurDeRecette = AllMCOData.OrderBy(p => p.SecteurDeRecette).Select(p => p.SecteurDeRecette).Distinct().ToList();
+            this.module.Model.DomaineDeDetection = AllMCOData.OrderBy(p => p.DomaineDeDetection).Select(p => p.DomaineDeDetection).Distinct().ToList();
+            this.module.Model.DomaineCorrection = LookupData.OrderBy(p => p.DomaineCorrection).Select(p => p.DomaineCorrection).Distinct().ToList();
+            this.module.Model.SecteurCorrection = LookupData.OrderBy(p => p.SecteurCorrection).Select(p => p.SecteurCorrection).Distinct().ToList();
+            this.module.Model.SousSecteur = AllMCOData.OrderBy(p => p.SousSecteur).Select(p => p.SousSecteur).Distinct().ToList();
+            this.module.Model.Gamme = AllMCOData.OrderBy(p => p.Gamme).Select(p => p.Gamme).Distinct().ToList();
+            this.module.Model.Report = new List<string>() {
                 "",
                 "M19B",
                 "M20A",
@@ -486,9 +502,9 @@ namespace Analyser.Services
                 "M22B"
             };
 
+            this.module.Model.SelectedResponsable = "João SILVA";
 
         }
         #endregion
-
     }
 }

@@ -27,6 +27,8 @@ namespace Analyser.Infrastructure.Model
             DateDeDerniereAffectation = !string.IsNullOrEmpty(data[14]) ? DateTime.Parse(data[14]) : null as DateTime?;
             Diagnostiqueur = data[15];
             Correcteur = data[16];
+            SousSecteur = data[17];
+            DocumentUniqueID = data[18];
 
         }
         public string NoFiche { get; set; }
@@ -46,6 +48,7 @@ namespace Analyser.Infrastructure.Model
         public DateTime? DateDeDerniereAffectation { get; set; }
         public string Diagnostiqueur { get; set; }
         public string Correcteur { get; set; }
-
+        public string SousSecteur { get; set; }
+        public string DocumentUniqueID { get; set; }
     }
 }

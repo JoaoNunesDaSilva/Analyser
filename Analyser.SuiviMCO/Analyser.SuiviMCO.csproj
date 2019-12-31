@@ -57,6 +57,7 @@
     <Compile Include="Config.xaml.cs">
       <DependentUpon>Config.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\NotesLinkHelper.cs" />
     <Compile Include="Helpers\VisualTreeHelperClass.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Module.cs" />
@@ -109,6 +110,13 @@
   <ItemGroup>
     <Resource Include="Images\cut_corner_round_889.png" />
     <Resource Include="Images\directory_close_1654.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\lightning_1261.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\view_close_818.png" />
+    <Resource Include="Images\view_simple_815.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -27,10 +27,11 @@
                             <StackPanel Margin="2,2" Grid.Column="1" Width="Auto" >
                                 <ToggleButton Name="button" 
                                               Tag="{Binding DisplayIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridColumnHeader}}}" 
+                                              ToolTip="Filtrer ce collonne"
                                               Command="local:Commands.FilterColumn"
                                               CommandManager.CanExecute="FilterColumn_CanExecute" 
                                               CommandManager.Executed="FilterColumn_Executed">
-                                    <Image Width="10px" Height="10px" Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/filter_1384.png"/>
+                                    <Image Width="10px" Height="10px" Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/view_simple_815.png"/>
                                 </ToggleButton>
                                 <Popup IsOpen="{Binding IsChecked, ElementName=button}" StaysOpen="False" MaxWidth="300px">
                                     <StackPanel Orientation="Vertical">
@@ -74,6 +75,98 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070"/>
+        <Style x:Key="OptionMarkFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FFF3F9FF"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#FFBCBCBC"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#FF707070"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#FFD9ECFF"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#FF3C77DD"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FF212121"/>
+        <Style x:Key="CustomCheckBoxStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="checkBoxBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid x:Name="markGrid">
+                                    <Path x:Name="optionMark" 
+                                          Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
+                                          Fill="{StaticResource OptionMark.Static.Glyph}" 
+                                          Margin="0" 
+                                          Opacity="0" Stretch="None"/>
+                                    <Rectangle x:Name="indeterminateMark" Fill="{StaticResource OptionMark.Static.Glyph}" Margin="2" Opacity="0" Height="12" Width="12"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                                <Setter Property="Padding" Value="4,-1,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="0"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -88,38 +181,131 @@
             </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Expander Grid.Row="0"  Padding="5,5"  Margin="5,5">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Image Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/view_simple_815.png" Width="16px" Height="16px" Margin="3,0" />
+                            <TextBlock FontWeight="Bold">Filtres</TextBlock>
+                        </StackPanel>
+                    </Expander.Header>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Column="0" Style="{DynamicResource CustomCheckBoxStyle}">Priorité</CheckBox>
+                        <ComboBox ItemsSource="{Binding Priorite}" SelectedItem="{Binding SelectedPriorite}" Grid.Column="1"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Column="2" Style="{DynamicResource CustomCheckBoxStyle}">Gravité</CheckBox>
+                        <ComboBox ItemsSource="{Binding Gravite}" SelectedItem="{Binding SelectedGravite}" Grid.Column="3"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Column="4" Style="{DynamicResource CustomCheckBoxStyle}">Statut</CheckBox>
+                        <ComboBox ItemsSource="{Binding Statut}" SelectedItem="{Binding SelectedStatut}" Grid.Column="5"/>
+
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="2" Grid.Column="0" Style="{DynamicResource CustomCheckBoxStyle}">Createur</CheckBox>
+                        <ComboBox Grid.Row="2" ItemsSource="{Binding Createur}" SelectedItem="{Binding SelectedCreateur}" Grid.Column="1"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="2" Grid.Column="2" Style="{DynamicResource CustomCheckBoxStyle}">Diagnostiqueur</CheckBox>
+                        <ComboBox Grid.Row="2" ItemsSource="{Binding Diagnostiqueur}" SelectedItem="{Binding SelectedDiagnostiqueur}" Grid.Column="3"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="2" Grid.Column="4" Style="{DynamicResource CustomCheckBoxStyle}">Correcteur</CheckBox>
+                        <ComboBox Grid.Row="2" ItemsSource="{Binding Correcteur}" SelectedItem="{Binding SelectedCorrecteur}" Grid.Column="5"/>
+
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="4" Grid.Column="0" Style="{DynamicResource CustomCheckBoxStyle}">Site</CheckBox>
+                        <ComboBox Grid.Row="4" ItemsSource="{Binding Site}" SelectedItem="{Binding SelectedSite}" Grid.Column="1"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="4" Grid.Column="2" Style="{DynamicResource CustomCheckBoxStyle}">Responsable</CheckBox>
+                        <ComboBox Grid.Row="4" ItemsSource="{Binding Responsable}" SelectedItem="{Binding SelectedResponsable}" Grid.Column="3"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="4" Grid.Column="4" Style="{DynamicResource CustomCheckBoxStyle}">Blocs Aplicatifs à Corriger</CheckBox>
+                        <ComboBox Grid.Row="4" ItemsSource="{Binding BlocsAplicatifsACorriger}" SelectedItem="{Binding SelectedBlocsAplicatifsACorriger}" Grid.Column="5"/>
+
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="6" Grid.Column="0" Style="{DynamicResource CustomCheckBoxStyle}">Nature de la Maintenance</CheckBox>
+                        <ComboBox Grid.Row="6" ItemsSource="{Binding NatureDeLaMaintenance}" SelectedItem="{Binding SelectedNatureDeLaMaintenance}" Grid.Column="1"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="6" Grid.Column="2" Style="{DynamicResource CustomCheckBoxStyle}">Nature de la Fiche</CheckBox>
+                        <ComboBox Grid.Row="6" ItemsSource="{Binding NatureDeLaFiche}" SelectedItem="{Binding SelectedNatureDeLaFiche}" Grid.Column="3"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="6" Grid.Column="4" Style="{DynamicResource CustomCheckBoxStyle}">Version Cible</CheckBox>
+                        <ComboBox Grid.Row="6" ItemsSource="{Binding Version}" SelectedItem="{Binding SelectedVersion}" Grid.Column="5"/>
+
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="8" Grid.Column="0" Style="{DynamicResource CustomCheckBoxStyle}">Type Maintenance</CheckBox>
+                        <ComboBox Grid.Row="8" ItemsSource="{Binding TypeMaintenance}" SelectedItem="{Binding SelectedTypeMaintenance}" Grid.Column="1"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="8" Grid.Column="2" Style="{DynamicResource CustomCheckBoxStyle}">Direction Responsable</CheckBox>
+                        <ComboBox Grid.Row="8" ItemsSource="{Binding DirectionResponsable}" SelectedItem="{Binding SelectedDirectionResponsable}" Grid.Column="3"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="8" Grid.Column="4" Style="{DynamicResource CustomCheckBoxStyle}">Secteur de Recette</CheckBox>
+                        <ComboBox Grid.Row="8" ItemsSource="{Binding SecteurDeRecette}" SelectedItem="{Binding SelectedSecteurDeRecette}" Grid.Column="5"/>
+
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="10" Grid.Column="0" Style="{DynamicResource CustomCheckBoxStyle}">Domaine de Detection</CheckBox>
+                        <ComboBox Grid.Row="10" ItemsSource="{Binding DomaineDeDetection}" SelectedItem="{Binding SelectedDomaineDeDetection}" Grid.Column="1"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="10" Grid.Column="2" Style="{DynamicResource CustomCheckBoxStyle}">Domaine de Correction</CheckBox>
+                        <ComboBox Grid.Row="10" ItemsSource="{Binding DomaineCorrection}" SelectedItem="{Binding SelectedDomaineCorrection}" Grid.Column="3"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="10" Grid.Column="4" Style="{DynamicResource CustomCheckBoxStyle}">Secteur de Correction</CheckBox>
+                        <ComboBox Grid.Row="10" ItemsSource="{Binding SecteurCorrection}" SelectedItem="{Binding SelectedSecteurCorrection}" Grid.Column="5"/>
+
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="12" Grid.Column="0" Style="{DynamicResource CustomCheckBoxStyle}">Sous Secteur</CheckBox>
+                        <ComboBox Grid.Row="12" ItemsSource="{Binding SousSecteur}" SelectedItem="{Binding SelectedSousSecteur}" Grid.Column="1"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="12" Grid.Column="2" Style="{DynamicResource CustomCheckBoxStyle}">Gamme</CheckBox>
+                        <ComboBox Grid.Row="12" ItemsSource="{Binding Gamme}" SelectedItem="{Binding SelectedGamme}" Grid.Column="3"/>
+                        <CheckBox Padding="2,2,2,2" FlowDirection="RightToLeft" Grid.Row="12" Grid.Column="4" Style="{DynamicResource CustomCheckBoxStyle}">Report</CheckBox>
+                        <ComboBox Grid.Row="12" ItemsSource="{Binding Report}" SelectedItem="{Binding SelectedReport}" Grid.Column="5"/>
+
+
+                    </Grid>
+                </Expander>
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">Nro Fiches :</Label>
                     <Label Grid.Column="1" Content="{Binding NroFiches}"></Label>
                     <Button Grid.Column="3"
                         Margin="2,2"
+                        ToolTip="Supprimer filtres"
                         Command="local:Commands.ShowAll"
                         CommandManager.CanExecute="ShowAll_CanExecute" 
                         CommandManager.Executed="ShowAll_Executed">
-                        <DockPanel>
-                            <Image DockPanel.Dock="Left" Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/close_mini_1522.png" Width="16px" Height="16px" Margin="3,0" />
-                            <TextBlock>Supprimer les filtres</TextBlock>
-                        </DockPanel>
+                        <Image Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/view_close_818.png" Width="16px" Height="16px" Margin="3,0" />
+                    </Button>
+                    <Button Grid.Column="4"
+                        Margin="2,2"
+                        ToolTip="Rafraîchir données"
+                        Command="local:Commands.RefreshList"
+                        CommandManager.CanExecute="RefreshList_CanExecute" 
+                        CommandManager.Executed="RefreshList_Executed">
+                        <Image Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/lightning_1261.png" Width="16px" Height="16px" Margin="3,0" />
                     </Button>
                 </Grid>
                 <DataGrid ItemsSource="{Binding MCOData}"  Name="dgMCO"
-                    CanUserReorderColumns="False"
-                    Margin="2,2"
-                    Grid.Row="1"
-                    FrozenColumnCount="3"
-                    AutoGenerateColumns="False" 
-                    RowBackground="White"
-                    AlternatingRowBackground="Gainsboro"  
-                    AlternationCount="2">
+                        CanUserReorderColumns="False"
+                        Margin="2,2"
+                        Grid.Row="2"
+                        FrozenColumnCount="3"
+                        AutoGenerateColumns="False" 
+                        RowBackground="White"
+                        PreviewMouseDoubleClick="dgMCO_PreviewMouseDoubleClick"
+                        AlternatingRowBackground="Gainsboro"  
+                        AlternationCount="2">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nº Fiche" IsReadOnly="True" Binding="{Binding NoFiche}" />
                         <DataGridTextColumn Header="Priorite" IsReadOnly="True" Binding="{Binding Priorite}"/>

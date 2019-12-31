@@ -437,5 +437,299 @@ namespace Analyser.SuiviMCO.Models
                 OnPropertyChanged("Report");
             }
         }
+
+        private string _SelectedPriorite;
+        public string SelectedPriorite
+        {
+            get
+            {
+                return _SelectedPriorite;
+            }
+            set
+            {
+                _SelectedPriorite = value;
+                OnPropertyChanged("SelectedPriorite");
+            }
+        }
+
+        private string _SelectedGravite;
+        public string SelectedGravite
+        {
+            get
+            {
+                return _SelectedGravite;
+            }
+            set
+            {
+                _SelectedGravite = value;
+                OnPropertyChanged("SelectedGravite");
+            }
+        }
+
+        private string _SelectedStatut;
+        public string SelectedStatut
+        {
+            get
+            {
+                return _SelectedStatut;
+            }
+            set
+            {
+                _SelectedStatut = value;
+                OnPropertyChanged("SelectedStatut");
+            }
+        }
+
+        private string _SelectedCreateur;
+        public string SelectedCreateur
+        {
+            get
+            {
+                return _SelectedCreateur;
+            }
+            set
+            {
+                _SelectedCreateur = value;
+                OnPropertyChanged("SelectedCreateur");
+            }
+        }
+
+        private string _SelectedDiagnostiqueur;
+        public string SelectedDiagnostiqueur
+        {
+            get
+            {
+                return _SelectedDiagnostiqueur;
+            }
+            set
+            {
+                _SelectedDiagnostiqueur = value;
+                OnPropertyChanged("SelectedDiagnostiqueur");
+            }
+        }
+
+        private string _SelectedCorrecteur;
+        public string SelectedCorrecteur
+        {
+            get
+            {
+                return _SelectedCorrecteur;
+            }
+            set
+            {
+                _SelectedCorrecteur = value;
+                OnPropertyChanged("SelectedCorrecteur");
+            }
+        }
+
+        private string _SelectedSite;
+        public string SelectedSite
+        {
+            get
+            {
+                return _SelectedSite;
+            }
+            set
+            {
+                _SelectedSite = value;
+                OnPropertyChanged("SelectedSite");
+            }
+        }
+
+        private string _SelectedResponsable;
+        public string SelectedResponsable
+        {
+            get
+            {
+                return _SelectedResponsable;
+            }
+            set
+            {
+                _SelectedResponsable = value;
+                OnPropertyChanged("SelectedResponsable");
+            }
+        }
+
+        private string _SelectedBlocsAplicatifsACorriger;
+        public string SelectedBlocsAplicatifsACorriger
+        {
+            get
+            {
+                return _SelectedBlocsAplicatifsACorriger;
+            }
+            set
+            {
+                _SelectedBlocsAplicatifsACorriger = value;
+                OnPropertyChanged("SelectedBlocsAplicatifsACorriger");
+            }
+        }
+
+        private string _SelectedNatureDeLaMaintenance;
+        public string SelectedNatureDeLaMaintenance
+        {
+            get
+            {
+                return _SelectedNatureDeLaMaintenance;
+            }
+            set
+            {
+                _SelectedNatureDeLaMaintenance = value;
+                OnPropertyChanged("SelectedNatureDeLaMaintenance");
+            }
+        }
+
+        private string _SelectedNatureDeLaFiche;
+        public string SelectedNatureDeLaFiche
+        {
+            get
+            {
+                return _SelectedNatureDeLaFiche;
+            }
+            set
+            {
+                _SelectedNatureDeLaFiche = value;
+                OnPropertyChanged("SelectedNatureDeLaFiche");
+            }
+        }
+
+        private string _SelectedVersion;
+        public string SelectedVersion
+        {
+            get
+            {
+                return _SelectedVersion;
+            }
+            set
+            {
+                _SelectedVersion = value;
+                OnPropertyChanged("SelectedVersion");
+            }
+        }
+
+        private string _SelectedTypeMaintenance;
+        public string SelectedTypeMaintenance
+        {
+            get
+            {
+                return _SelectedTypeMaintenance;
+            }
+            set
+            {
+                _SelectedTypeMaintenance = value;
+                OnPropertyChanged("SelectedTypeMaintenance");
+            }
+        }
+
+        private string _SelectedDirectionResponsable;
+        public string SelectedDirectionResponsable
+        {
+            get
+            {
+                return _SelectedDirectionResponsable;
+            }
+            set
+            {
+                _SelectedDirectionResponsable = value;
+                OnPropertyChanged("SelectedDirectionResponsable");
+            }
+        }
+
+        private string _SelectedSecteurDeRecette;
+        public string SelectedSecteurDeRecette
+        {
+            get
+            {
+                return _SelectedSecteurDeRecette;
+            }
+            set
+            {
+                _SelectedSecteurDeRecette = value;
+                OnPropertyChanged("SelectedSecteurDeRecette");
+            }
+        }
+
+        private string _SelectedDomaineDeDetection;
+        public string SelectedDomaineDeDetection
+        {
+            get
+            {
+                return _SelectedDomaineDeDetection;
+            }
+            set
+            {
+                _SelectedDomaineDeDetection = value;
+                OnPropertyChanged("SelectedDomaineDeDetection");
+            }
+        }
+
+        private string _SelectedDomaineCorrection;
+        public string SelectedDomaineCorrection
+        {
+            get
+            {
+                return _SelectedDomaineCorrection;
+            }
+            set
+            {
+                _SelectedDomaineCorrection = value;
+                OnPropertyChanged("SelectedDomaineCorrection");
+            }
+        }
+
+        private string _SelectedSecteurCorrection;
+        public string SelectedSecteurCorrection
+        {
+            get
+            {
+                return _SelectedSecteurCorrection;
+            }
+            set
+            {
+                _SelectedSecteurCorrection = value;
+                OnPropertyChanged("SelectedSecteurCorrection");
+            }
+        }
+
+        private string _SelectedSousSecteur;
+        public string SelectedSousSecteur
+        {
+            get
+            {
+                return _SelectedSousSecteur;
+            }
+            set
+            {
+                _SelectedSousSecteur = value;
+                OnPropertyChanged("SelectedSousSecteur");
+            }
+        }
+
+        private string _SelectedGamme;
+        public string SelectedGamme
+        {
+            get
+            {
+                return _SelectedGamme;
+            }
+            set
+            {
+                _SelectedGamme = value;
+                OnPropertyChanged("SelectedGamme");
+            }
+        }
+
+        private string _SelectedReport;
+        public string SelectedReport
+        {
+            get
+            {
+                return _SelectedReport;
+            }
+            set
+            {
+                _SelectedReport = value;
+                OnPropertyChanged("SelectedReport");
+            }
+        }
     }
 }

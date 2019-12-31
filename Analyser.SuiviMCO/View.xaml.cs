@@ -129,12 +129,30 @@ namespace Analyser.SuiviMCO
             e.Handled = true;
         }
 
+        private void RefreshList_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        private void RefreshList_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // reloads data and clears all filters
+            this.service.RefreshList();
+            this.viewModel.Filters = new ObservableCollection<FilterModel>();
+            foreach (DataGridColumnHeader header in VisualTreeHelperClass.GetVisualChildCollection<DataGridColumnHeader>(dgMCO))
+            {
+                ToggleButton toggle = VisualTreeHelperClass.GetVisualChildCollection<ToggleButton>(header).First();
+                toggle.Background = Brushes.Transparent;
+                toggle.Foreground = Brushes.Black;
+            }
+            e.Handled = true;
+        }
         private void ShowAll_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
         private void ShowAll_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            // clears all filters and shows all loaded records
             this.viewModel.MCOData = this.service.ShowAll();
             this.viewModel.Filters = new ObservableCollection<FilterModel>();
             foreach (DataGridColumnHeader header in VisualTreeHelperClass.GetVisualChildCollection<DataGridColumnHeader>(dgMCO))
@@ -146,5 +164,11 @@ namespace Analyser.SuiviMCO
             e.Handled = true;
         }
 
+        private void dgMCO_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MCOData model = (MCOData)dgMCO.SelectedItem;
+            NotesLinkHelper.OpenNotesDocument(model.Ticket.DocumentUniqueID);
+
+        }
     }
 }
