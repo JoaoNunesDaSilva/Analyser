@@ -27,7 +27,7 @@
                             <StackPanel Margin="2,2" Grid.Column="1" Width="Auto" >
                                 <ToggleButton Name="button" 
                                               Tag="{Binding DisplayIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridColumnHeader}}}" 
-                                              ToolTip="Filtrer ce collonne"
+                                              ToolTip="Filtrer ce colonne"
                                               Command="local:Commands.FilterColumn"
                                               CommandManager.CanExecute="FilterColumn_CanExecute" 
                                               CommandManager.Executed="FilterColumn_Executed">
@@ -169,10 +169,7 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <GroupBox Grid.Row="1">
+        <GroupBox>
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/collection_989.png" Width="16px" Height="16px" Margin="3,0" />
@@ -189,7 +186,7 @@
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                             <Image Source="pack://application:,,,/Analyser.SuiviMCO;component/Images/view_simple_815.png" Width="16px" Height="16px" Margin="3,0" />
-                            <TextBlock FontWeight="Bold">Filtres</TextBlock>
+                            <TextBlock FontWeight="Bold">Filtrage</TextBlock>
                         </StackPanel>
                     </Expander.Header>
                     <Grid >
@@ -281,7 +278,7 @@
                     <Label Grid.Column="1" Content="{Binding NroFiches}"></Label>
                     <Button Grid.Column="3"
                         Margin="2,2"
-                        ToolTip="Supprimer filtres"
+                        ToolTip="Afficher tous"
                         Command="local:Commands.ShowAll"
                         CommandManager.CanExecute="ShowAll_CanExecute" 
                         CommandManager.Executed="ShowAll_Executed">

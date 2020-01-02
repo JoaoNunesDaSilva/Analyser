@@ -28,8 +28,7 @@ namespace Analyser.Infrastructure.Model
             Diagnostiqueur = data[15];
             Correcteur = data[16];
             SousSecteur = data[17];
-            DocumentUniqueID = data[18];
-
+            if (data.Length > 18) DocumentUniqueID = data[18];
         }
         public string NoFiche { get; set; }
         public string Libelle { get; set; }

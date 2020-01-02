@@ -16,15 +16,26 @@ namespace Analyser.SuiviMCO.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        public ViewModel() {
+        public string dataRootPathKey = "DataRootPath";
+        /* default only. add appSettings key [DataRootPath] for customization */
+        public string dataRootPath = @"D:\Daily Reports\MCO"; 
+        public ViewModel()
+        {
             LookupData = new ObservableCollection<LookupData>();
             MCOData = new ObservableCollection<MCOData>();
             MCODataEspaceClient = new ObservableCollection<MCOData>();
             SuiviData = new ObservableCollection<SuiviData>();
+            if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains(dataRootPathKey))
+            {
+                dataRootPath = System.Configuration.ConfigurationManager.AppSettings.Get(dataRootPathKey);
+            }
+            LookupFile = string.Format(@"{0}\Suivi_MCO_LOOKUP", dataRootPath);
+            MCOFile = string.Format(@"{0}\Suivi_MCO", dataRootPath);
+            MCOFileEspaceClient = string.Format(@"{0}\Suivi_MCO_EspClient", dataRootPath);
+            DataFile = string.Format(@"{0}\Suivi.data", dataRootPath);
         }
 
-        string _LookupFile = @"D:\Daily Reports\MCO\Suivi_MCO_LOOKUP";
+        string _LookupFile;
         public string LookupFile
         {
             get
@@ -50,7 +61,7 @@ namespace Analyser.SuiviMCO.Models
                 OnPropertyChanged("LookupData");
             }
         }
-        string _MCOFile = @"D:\Daily Reports\MCO\Suivi_MCO";
+        string _MCOFile;
         public string MCOFile
         {
             get
@@ -77,7 +88,7 @@ namespace Analyser.SuiviMCO.Models
                 OnPropertyChanged("NroFiches");
             }
         }
-        string _MCOFileEspaceClient = @"D:\Daily Reports\MCO\Suivi_MCO_EspClient";
+        string _MCOFileEspaceClient;
         public string MCOFileEspaceClient
         {
             get
@@ -103,7 +114,7 @@ namespace Analyser.SuiviMCO.Models
                 OnPropertyChanged("MCODataEspaceClient");
             }
         }
-        string _DataFile = @"D:\Daily Reports\MCO\Suivi.data";
+        string _DataFile ;
         public string DataFile
         {
             get
